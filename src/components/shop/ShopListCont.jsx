@@ -13,7 +13,7 @@ export default function ShopListCont() {
       console.error('Error al obtener datos:', error);
     }
   };
-  console.log(items)
+
 
   const createNewItem = async () => {
     try {
@@ -80,6 +80,18 @@ export default function ShopListCont() {
         onChange={(e) => setNewItem({ ...newItem, size: parseInt(e.target.value) })}
       />
       <button onClick={createNewItem}>Crear Item</button>
+
+      {items && (
+        items.map((e, index) => 
+          
+          <div className='row' key={index}>
+            <p> {e.name} </p>
+            <p> {e.description} </p>
+            <p> {e.stock} </p>
+            <p> {e.size} </p>
+          </div>
+          )
+          )}
     </div>
   );
 }
