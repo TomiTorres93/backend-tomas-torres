@@ -3,6 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import itemsRouter from './routers/items.router.mjs';
 
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -20,6 +21,8 @@ app.listen(SERVER_PORT, () => {
 const connectMongoDB = async () => {
   try {
     await mongoose.connect('mongodb+srv://tomitorres93:rodolfowalsh93@cluster0.xhrxoec.mongodb.net/test');
+
+
     console.log("Conectado con exito a MongoDB usando Moongose.");
   
   } catch (error) {

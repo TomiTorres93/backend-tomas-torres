@@ -7,6 +7,7 @@ const router = Router();
 
 // // Lectura
 
+
 router.get('/', async (req,res)=>{
     try {
         let items = await itemService.getAll();
@@ -17,6 +18,29 @@ router.get('/', async (req,res)=>{
     }
 })
 
+router.get('/count', async (req,res)=>{
+    try {
+        let countedItems = await itemService.countItems();
+        res.status(200).send({ count: countedItems }); // Enviar el valor dentro de un objeto
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: error, message: "No se pudo obtener los items." });
+    }
+    
+})
+
+router.get(`/match/:parametroId`, async (req,res)=>{
+    const parametroId = req.params.parametroId; // Captura el valor del parámetro de la URL
+
+    try {
+        let matchedItems = await itemService.matchItems(Number(parametroId));
+        res.status(200).send({ match: matchedItems }); // Enviar el valor dentro de un objeto
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: error, message: "No se pudo obtener los items." });
+    }
+    
+})
 
 // Crear
 router.post('/', async (req, res) => {
