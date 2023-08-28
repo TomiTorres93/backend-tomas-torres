@@ -3,6 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+// import express from 'express';
+
+
+
+
+// const app = express();
+
+// const SERVER_PORT = 3000;
+// app.listen(SERVER_PORT, () => {
+//     console.log("Servidor escuchando por el puerto: " + SERVER_PORT);
+// });
+
+
+
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
