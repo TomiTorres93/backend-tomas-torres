@@ -42,6 +42,18 @@ router.get(`/match/:parametroId`, async (req,res)=>{
     
 })
 
+router.get(`/group/`, async (req,res)=>{
+
+    try {
+        let groupedItems = await itemService.groupItems();
+        res.status(200).send({ group: groupedItems }); // Enviar el valor dentro de un objeto
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: error, message: "No se pudo obtener los items." });
+    }
+    
+})
+
 // Crear
 router.post('/', async (req, res) => {
     try {

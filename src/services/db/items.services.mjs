@@ -30,5 +30,16 @@ export default class ItemsService {
         return result;
     }
 
+    groupItems = async () => {
+        let result = await itemModel.aggregate([
+            
+            {
+                $group: {_id: "$size", totalQty: {$sum: "$stock" } } 
+            }
+
+            ])
+        return result;
+    }
+
 
 }

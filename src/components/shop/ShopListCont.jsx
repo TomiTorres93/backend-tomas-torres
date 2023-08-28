@@ -8,6 +8,7 @@ export default function ShopListCont() {
     try {
       const response = await fetch('http://localhost:3001/api/items');
       const data = await response.json();
+      console.log(data)
       setItems(data);
     } catch (error) {
       console.error('Error al obtener datos:', error);
