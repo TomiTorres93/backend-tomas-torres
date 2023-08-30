@@ -8,15 +8,31 @@ const router = Router();
 // // Lectura
 
 
-router.get('/', async (req,res)=>{
+router.get('/', async (req, res) => {
+    const query = req.query;
     try {
-        let items = await itemService.getAll();
-        res.send(items);
+        const options = {
+            page: parseInt(query.page) || 1,
+            limit: parseInt(query.limit) || 4,
+        };
+
+        if (query.sort === "desc") options.sort = { price: -1 };
+        if (query.sort === "asc") options.sort = { price: 1 };
+
+        const items = await itemService.getAll({
+            query: {}, // Puedes ajustar el filtro según tus necesidades aquí
+            options: options
+        });
+
+        res.send({ status: 'success', payload: items });
     } catch (error) {
         console.error(error);
-        res.status(500).send({error:  error, message: "No se pudo obtener los items."});
+        res.status(500).send({ error: error, message: "No se pudo obtener los items." });
     }
-})
+});
+
+
+
 
 router.get('/count', async (req,res)=>{
     try {

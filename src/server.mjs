@@ -2,15 +2,22 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import itemsRouter from './routers/items.router.mjs';
-
+import session from 'express-session'
+import cookiesRouter from './routers/cookies.router.mjs';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(session({
+  secret: 'secretCoder',
+  resave: true,
+  saveUninitialized: true
+}))
 // Declaración de Routers:
 app.use("/api/items", itemsRouter);
+app.use("/", cookiesRouter);
+
 
 
 const SERVER_PORT = 3001

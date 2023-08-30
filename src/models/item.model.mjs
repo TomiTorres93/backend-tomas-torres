@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2'
 
 const itemCollection = 'items';
 
-// definimos el schema 
 const itemSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -14,6 +14,6 @@ const itemSchema = new mongoose.Schema({
     size: Number,
 })
 
+itemSchema.plugin(mongoosePaginate)
 
-// Definimos el modelo
 export const itemModel = mongoose.model(itemCollection, itemSchema);

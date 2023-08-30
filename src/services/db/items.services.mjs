@@ -6,10 +6,20 @@ export default class ItemsService {
         console.log("Working items with Database persistence in mongodb");
     }
 
-    getAll = async () => {
-        let items = await itemModel.find();
-        return items.map(item=>item.toObject());
+    getAll2 = async ({ limit, page, sort }) => {
+        let items = await itemModel.find({ })
+            .limit(limit)
+            .skip((page - 1) * limit)
+            .sort(sort);
+           
+        return items.map(item => item.toObject());
     }
+
+    getAll = async ({ query, options }) => {
+        const result = await itemModel.paginate(query, options);
+        return result.docs.map(item => item.toObject());
+    }
+    
     save = async (item) => {
         let result = await itemModel.create(item);
         return result;
