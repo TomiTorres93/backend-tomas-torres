@@ -178,17 +178,19 @@ export default function ShopListCont() {
 
 
     <div className='column'> 
-
+    <div className='row'> 
     <Input onChange={(e) => setSearch(e.target.value)} placeholder='Buscá una prenda...' className='input'/> <Button onClick={searchFunction}> BUSCAR </Button> <Button onClick={closeSearch}> CERRAR BÚSQUEDA </Button> 
-
-   
-    <Button onClick={() => {sortFunction("asc")  } }>
+    </div>
+   <div className='row'>
+   <Button onClick={() => {sortFunction("asc")  } }>
             PRECIO ASCENDENTE
           </Button>
 
           <Button onClick={() => {sortFunction("desc")}}>
             PRECIO DESCENDENTE
           </Button>
+   </div>
+
 
       {items && (
         

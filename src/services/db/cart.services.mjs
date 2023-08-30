@@ -1,34 +1,21 @@
-import mongoose from 'mongoose';
-import mongoosePaginate from 'mongoose-paginate-v2'
-
-const collectionName = 'items';
-
-const stringTypeSchemaUniqueRequired = {
-    type: String,
-    unique: true,
-    required: true
-};
-
-const stringTypeSchemaNonUniqueRequired = {
-    type: String,
-    required: true
-};
-
-const numberTypeSchemaNonUniqueRequired = {
-    type: Number,
-    required: true
-};
+import {cartModel} from "./models/cart.model.mjs";
 
 
-const itemSchema = new mongoose.Schema({
-    name: stringTypeSchemaUniqueRequired,
-    description: stringTypeSchemaNonUniqueRequired,
-    category: stringTypeSchemaNonUniqueRequired,
-    stock: numberTypeSchemaNonUniqueRequired,
-    size: numberTypeSchemaNonUniqueRequired,
-    price: numberTypeSchemaNonUniqueRequired
-});
+export default class CartsService {
+    constructor() { 
+        console.log("Working items with Database persistence in mongodb");
+    }
 
-itemSchema.plugin(mongoosePaginate)
 
-export const itemModel = mongoose.model(collectionName, itemSchema);
+    getAll = async () => {
+     
+    }
+
+    
+    save = async (item) => {
+        let result = await cartModel.create(item);
+        return result;
+    }
+
+
+}

@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import itemsRouter from './routers/items.router.mjs';
+import cartRouter from './routers/cart.router.mjs';
 import session from 'express-session'
 import cookiesRouter from './routers/cookies.router.mjs';
 
@@ -16,7 +17,8 @@ app.use(session({
 }))
 // Declaración de Routers:
 app.use("/api/items", itemsRouter);
-app.use("/", cookiesRouter);
+app.use("/api/carts", cartRouter);
+// app.use("/", cookiesRouter);
 
 
 
