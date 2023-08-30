@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2'
 
 const collectionName = 'items';
 
@@ -25,5 +26,7 @@ const itemSchema = new mongoose.Schema({
     stock: stringTypeSchemaNonUniqueRequired,
     size: numberTypeSchemaNonUniqueRequired
 });
+
+itemSchema.plugin(mongoosePaginate)
 
 export const itemModel = mongoose.model(collectionName, itemSchema);

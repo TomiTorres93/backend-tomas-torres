@@ -10,21 +10,29 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     const query = req.query;
+
     try {
         const options = {
             page: parseInt(query.page) || 1,
-            limit: parseInt(query.limit) || 4,
-        };
+            limit: parseInt(query.limit) || 2,
+        }
 
+   
         if (query.sort === "desc") options.sort = { price: -1 };
         if (query.sort === "asc") options.sort = { price: 1 };
+     
 
-        const items = await itemService.getAll({
-            query: {}, // Puedes ajustar el filtro según tus necesidades aquí
-            options: options
-        });
+        const items = await itemService.getAll(
+            {
+                query: {}, // Puedes ajustar el filtro según tus necesidades aquí
+                options: options
+            }
+        )
 
-        res.send({ status: 'success', payload: items });
+  
+
+   
+        res.send({ status: 'success', payload: items.docs, pagination: items.pagination});
     } catch (error) {
         console.error(error);
         res.status(500).send({ error: error, message: "No se pudo obtener los items." });

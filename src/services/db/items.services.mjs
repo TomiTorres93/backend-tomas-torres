@@ -1,4 +1,4 @@
-import {itemModel} from "./models/item.mjs";
+import {itemModel} from "./models/item.model.mjs";
 
 
 export default class ItemsService {
@@ -6,19 +6,30 @@ export default class ItemsService {
         console.log("Working items with Database persistence in mongodb");
     }
 
-    getAll2 = async ({ limit, page, sort }) => {
-        let items = await itemModel.find({ })
-            .limit(limit)
-            .skip((page - 1) * limit)
-            .sort(sort);
+    // getAll2 = async ({ limit, page, sort }) => {
+    //     let items = await itemModel.find({ })
+    //         .limit(limit)
+    //         .skip((page - 1) * limit)
+    //         .sort(sort);
            
-        return items.map(item => item.toObject());
-    }
+    //     return items.map(item => item.toObject());
+    // }
 
     getAll = async ({ query, options }) => {
         const result = await itemModel.paginate(query, options);
-        return result.docs.map(item => item.toObject());
+        return {
+           docs: result.docs.map(item => item.toObject()),
+            pagination: {
+                page: result.page,
+                limit: result.limit,
+                totalDocs: result.totalDocs,
+                totalPages: result.totalPages,
+                hasNextPage: result.hasNextPage,
+                hasPrevPage: result.hasPrevPage,
+            }
+        }  
     }
+
     
     save = async (item) => {
         let result = await itemModel.create(item);

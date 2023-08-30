@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
 
+
 export default function ShopListCont() {
+
+
   const [items, setItems] = useState([]);
+  const [paginationData, setPaginationData] = useState([]);
   const [newItem, setNewItem] = useState({ name: '', description: '', stock: 0, size: 0 });
 
   const getDataFromDB = async () => {
     try {
       const response = await fetch('http://localhost:3001/api/items');
       const data = await response.json();
-      console.log(data)
+
       setItems(data);
+
+ 
+
+    setPaginationData(data.pagination)
     } catch (error) {
       console.error('Error al obtener datos:', error);
     }
@@ -41,6 +49,19 @@ export default function ShopListCont() {
   useEffect(() => {
     getDataFromDB();
   }, []);
+  console.log(paginationData)
+  
+  const handleNextPage = () => {
+    if (paginationData.hasNextPage) {
+      const nextPage = paginationData.page + 1;
+      const newQuery = `?page=${nextPage}&limit=${paginationData.limit}`; // Construimos la nueva query
+      const newUrl = `${window.location.pathname}${newQuery}`; // Construimos la nueva URL
+      window.history.pushState({}, '', newUrl); // Actualizamos la URL
+      getDataFromDB(newUrl); // Obtenemos los datos actualizados
+    }
+  };
+
+
 
   return (
     <div>
@@ -82,8 +103,12 @@ export default function ShopListCont() {
       />
       <button onClick={createNewItem}>Crear Item</button>
 
-      {items && (
-        items.map((e, index) => 
+    <div className='column'>
+
+   
+      {items.payload && (
+        
+        items.payload.map((e, index) => 
           
           <div className='row' key={index}>
             <p> {e.name} </p>
@@ -93,6 +118,8 @@ export default function ShopListCont() {
           </div>
           )
           )}
+           </div>
+           <button onClick={handleNextPage} >NEXT PAGE</button>
     </div>
   );
 }
