@@ -6,14 +6,6 @@ export default class ItemsService {
         console.log("Working items with Database persistence in mongodb");
     }
 
-    // getAll2 = async ({ limit, page, sort }) => {
-    //     let items = await itemModel.find({ })
-    //         .limit(limit)
-    //         .skip((page - 1) * limit)
-    //         .sort(sort);
-           
-    //     return items.map(item => item.toObject());
-    // }
 
     getAll = async ({ query, options }) => {
         const result = await itemModel.paginate(query, options);
@@ -26,6 +18,8 @@ export default class ItemsService {
                 totalPages: result.totalPages,
                 hasNextPage: result.hasNextPage,
                 hasPrevPage: result.hasPrevPage,
+                prevLink: result.prevLink,
+                nextLink: result.nextLink,
             }
         }  
     }

@@ -17,28 +17,24 @@ router.get('/', async (req, res) => {
             limit: parseInt(query.limit) || 2,
         }
 
-   
         if (query.sort === "desc") options.sort = { price: -1 };
         if (query.sort === "asc") options.sort = { price: 1 };
-     
 
+
+     
         const items = await itemService.getAll(
             {
-                query: {}, // Puedes ajustar el filtro según tus necesidades aquí
+                query: { name: { $regex: query.filter || '', $options: 'i' } }, 
                 options: options
             }
         )
 
-  
-
-   
-        res.send({ status: 'success', payload: items.docs, pagination: items.pagination});
+        res.send({ status: 'success', payload: items.docs, pagination: items.pagination });
     } catch (error) {
         console.error(error);
         res.status(500).send({ error: error, message: "No se pudo obtener los items." });
     }
 });
-
 
 
 
@@ -81,8 +77,8 @@ router.get(`/group/`, async (req,res)=>{
 // Crear
 router.post('/', async (req, res) => {
     try {
-        let { name, description, stock, size } = req.body
-        let user = await itemService.save({ name, description, stock, size });
+        let {name, description, category, stock, size, price  } = req.body
+        let user = await itemService.save({ name, description, category, stock, size, price });
         res.status(201).send({ result: 'success', payload: user })
     } catch (error) {
         console.error("No se pudo crear usuarios con moongose: " + error);

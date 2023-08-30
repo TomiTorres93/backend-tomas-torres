@@ -23,7 +23,7 @@ function App() {
     <div className="App">
           <Routes>
             <Route path='/' element={<ShopListCont />} ></Route>
-
+            <Route path='/api/items' element={<ShopListCont />} ></Route>
           </Routes>
     </div>
     </CartContextProvider>
