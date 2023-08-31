@@ -53,3 +53,91 @@
   justify-content: center;
   gap: 1rem;
 }
+
+.itemCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 10px;
+  height: 15rem;
+  width: 10rem;
+  background-color: whitesmoke;
+  border: 1px solid rgb(76, 76, 76);
+  font-family: monospace;
+  transition: 0.3s all ease-in-out;
+  cursor: pointer;
+  animation: backgg normal 1s ease-in-out;
+  opacity: 1;
+  position: relative;
+  top: 0rem;
+}
+
+
+.buttonbyn {
+  padding: 0.25rem 0.5rem;
+  color: black;
+  text-decoration: none;
+background: linear-gradient(304deg,  rgb(246, 246, 246) 0%,  rgb(255, 255, 255) 100%);
+  font-family: monospace;
+  border-radius: 5px;
+  font-size: 0.7rem;
+  width: fit-content;
+  transition: 0.2s all ease-in-out;
+  margin: 0.25rem;
+  font-weight: 400;
+  border: 1px solid rgb(213, 213, 213);
+  cursor: pointer;
+}
+
+.buttonbynbigger {
+  padding: 0.5rem 1rem;
+  color: black;
+  text-decoration: none;
+background: linear-gradient(304deg,  rgb(246, 246, 246) 0%,  rgb(255, 255, 255) 100%);
+font-family: monospace;
+border-radius: 5px;
+  font-size: 0.7rem;
+  width: fit-content;
+  transition: 0.3s all ease-in-out;
+  margin: 0.25rem;
+  font-weight: 400;
+  border: 1px solid rgb(213, 213, 213);
+  cursor: pointer;
+}
+
+.buttonbyn:hover  {
+background: rgb(215, 215, 215);
+}
+
+.buttonbynbigger:hover {
+  background: rgb(215, 215, 215);
+
+}
+
+.tittle {
+  letter-spacing: .5rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  font-family: monospace;
+}
+
+/* EFFECTS */
+
+@keyframes backgg {
+    0% { 
+      position: relative;
+      top: 2rem;
+      opacity: .5;  
+    }
+    100% {  
+      position: relative;
+      top: 0rem;
+      opacity: 1;     
+    }
+}
+.itemCard:hover {
+  border: #61dafb 1px solid;
+
+}

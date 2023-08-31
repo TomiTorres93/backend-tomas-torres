@@ -24,7 +24,7 @@ export default class ItemsService {
         }  
     }
 
-    
+
     save = async (item) => {
         let result = await itemModel.create(item);
         return result;

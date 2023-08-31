@@ -3,13 +3,8 @@ import mongoosePaginate from 'mongoose-paginate-v2'
 
 const collectionName = 'carts';
 
-const stringTypeSchemaUniqueRequired = {
-    type: String,
-    unique: true,
-    required: true
-};
 
-const stringTypeSchemaNonUniqueRequired = {
+const objectIdTypeSchemaNonUniqueRequired = {
     type: String,
     required: true
 };
@@ -19,14 +14,21 @@ const numberTypeSchemaNonUniqueRequired = {
     required: true
 };
 
+const stringTypeSchemaNonUniqueRequired = {
+    type: String,
+    required: true,
+
+};
+
 
 const cartSchema = new mongoose.Schema({
-    name: stringTypeSchemaUniqueRequired,
-    description: stringTypeSchemaNonUniqueRequired,
-    category: stringTypeSchemaNonUniqueRequired,
-    stock: numberTypeSchemaNonUniqueRequired,
-    size: numberTypeSchemaNonUniqueRequired,
-    price: numberTypeSchemaNonUniqueRequired
+    products: [{
+        id: {type: mongoose.Types.ObjectId},
+        product: stringTypeSchemaNonUniqueRequired,
+        price: numberTypeSchemaNonUniqueRequired,
+        quantity: numberTypeSchemaNonUniqueRequired
+    }]
+  
 });
 
 cartSchema.plugin(mongoosePaginate)

@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import CartList from './CartList';
 
 export default function CartListCont() {
   return (
-    <div>CartListCont</div>
+    <div>
+      <h1 className='tittle'>CARRITO</h1>
+      <CartList />
+    </div>
   )
 }

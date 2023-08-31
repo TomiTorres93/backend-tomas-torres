@@ -7,7 +7,12 @@ import session from 'express-session'
 import cookiesRouter from './routers/cookies.router.mjs';
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:3000', // Especifica el dominio permitido
+  methods: 'GET,POST,PUT,DELETE', // Especifica los métodos permitidos
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
