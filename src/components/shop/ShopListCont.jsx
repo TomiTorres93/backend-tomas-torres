@@ -65,7 +65,6 @@ export default function ShopListCont() {
 
       if (response.ok) {
         console.log('Item creado exitosamente');
-        // Actualizar la lista de items después de crear uno nuevo
         getDataFromDB();
       } else {
         console.error('Error al crear item');
@@ -75,38 +74,27 @@ export default function ShopListCont() {
     }
   };
 
-  // Función para agregar al carrito
-  const addToCart = async (a, b) => {
+  const addToCart = async (cart) => {
     try {
       const response = await fetch('http://localhost:3001/api/carts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          products: [{
-
-            product: a,
-            price: b,
-            quantity: 1
-        }]
-
-        }),
-      }
-
-      );
-
+        body: JSON.stringify({ cart }), 
+      });
+  
       if (response.ok) {
         console.log('Item agregado al carrito exitosamente');
-        cartAPIget();
+       cartAPIget();
       } else {
-        console.log('Error al agregar item al carrito');
+        console.error('Error al agregar item');
       }
     } catch (error) {
-      console.log('Error al agregar item al carrito:', error);
+      console.error('Error al agregar item:', error);
     }
   };
-
+  
 
 
 
@@ -116,10 +104,10 @@ export default function ShopListCont() {
       const url = new URL(window.location.href);
       let sort = url.searchParams.get('sort') !== null ? '&sort=' + url.searchParams.get('sort') : ''
       const nextPage = paginationData.page + 1;
-      const newQuery = `?page=${nextPage}&limit=${paginationData.limit}${sort}`; // Construimos la nueva query
-      const newUrl = `/api/items${newQuery}`; // Construimos la nueva URL
-      window.history.pushState({}, '', `/products${newQuery}`); // Actualizamos la URL
-      getDataFromDB(newUrl); // Obtenemos los datos actualizados
+      const newQuery = `?page=${nextPage}&limit=${paginationData.limit}${sort}`; 
+      const newUrl = `/api/items${newQuery}`; 
+      window.history.pushState({}, '', `/products${newQuery}`); 
+      getDataFromDB(newUrl); 
       setCurrentPage(currentPage + 1)
     }
   };
@@ -133,26 +121,26 @@ export default function ShopListCont() {
       const url = new URL(window.location.href);
       let sort = url.searchParams.get('sort') !== null ? '&sort=' + url.searchParams.get('sort') : ''
       const previousPage = paginationData.page - 1;
-      const newQuery = `?page=${previousPage}&limit=${paginationData.limit}${sort}`; // Construimos la nueva query
-      const newUrl = `/api/items${newQuery}`; // Construimos la nueva URL
-      window.history.pushState({}, '', `/products${newQuery}`); // Actualizamos la URL
-      getDataFromDB(newUrl); // Obtenemos los datos actualizados
+      const newQuery = `?page=${previousPage}&limit=${paginationData.limit}${sort}`; 
+      const newUrl = `/api/items${newQuery}`;
+      window.history.pushState({}, '', `/products${newQuery}`);
+      getDataFromDB(newUrl); 
       setCurrentPage(currentPage - 1)
     }
   };
 
   const searchFunction = () => {
     if (search.length > 0) {
-      const newQuery = `?page=1&limit=${paginationData.limit}&filter=${search}`; // Construimos la nueva query
-      const newUrl = `/api/items${newQuery}`; // Construimos la nueva URL
-      window.history.pushState({}, '', `/products${newQuery}`); // Actualizamos la URL
-      getDataFromDB(newUrl); // Obtenemos los datos actualizados
+      const newQuery = `?page=1&limit=${paginationData.limit}&filter=${search}`; 
+      const newUrl = `/api/items${newQuery}`; 
+      window.history.pushState({}, '', `/products${newQuery}`); 
+      getDataFromDB(newUrl); 
       setCurrentPage(1)
     } else {
-      const newQuery = `?page=1&limit=${paginationData.limit}`; // Construimos la nueva query
-      const newUrl = `/api/items${newQuery}`; // Construimos la nueva URL
-      window.history.pushState({}, '', `/products${newQuery}`); // Actualizamos la URL
-      getDataFromDB(newUrl); // Obtenemos los datos actualizados
+      const newQuery = `?page=1&limit=${paginationData.limit}`;
+      const newUrl = `/api/items${newQuery}`; 
+      window.history.pushState({}, '', `/products${newQuery}`); 
+      getDataFromDB(newUrl); 
       setCurrentPage(1)
     }
   }
@@ -163,7 +151,7 @@ export default function ShopListCont() {
     const url = new URL(window.location.href);
 
     url.searchParams.set('sort', criteria);
-    const newUrl = `/api/items${url.search}`; // Construimos la nueva URL
+    const newUrl = `/api/items${url.search}`; 
 
     window.history.pushState({}, '', url);
     getDataFromDB(newUrl);
@@ -172,10 +160,10 @@ export default function ShopListCont() {
 
 
   const closeSearch = () => {
-    const newQuery = `?page=1&limit=${paginationData.limit}`; // Construimos la nueva query
-    const newUrl = `/api/items${newQuery}`; // Construimos la nueva URL
-    window.history.pushState({}, '', `/products${newQuery}`); // Actualizamos la URL
-    getDataFromDB(newUrl); // Obtenemos los datos actualizados
+    const newQuery = `?page=1&limit=${paginationData.limit}`;
+    const newUrl = `/api/items${newQuery}`; 
+    window.history.pushState({}, '', `/products${newQuery}`); 
+    getDataFromDB(newUrl); 
     setCurrentPage(1)
 
   }

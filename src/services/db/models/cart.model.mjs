@@ -23,7 +23,7 @@ const stringTypeSchemaNonUniqueRequired = {
 
 const cartSchema = new mongoose.Schema({
     products: [{
-        id: {type: mongoose.Types.ObjectId},
+        id: {type: mongoose.Types.ObjectId, required: true},
         product: stringTypeSchemaNonUniqueRequired,
         price: numberTypeSchemaNonUniqueRequired,
         quantity: numberTypeSchemaNonUniqueRequired
