@@ -3,8 +3,8 @@ import React from 'react'
 export default function ShopItem({ _id, name, description, stock, size, price, addToCart }) {
 
   const addToCartF = () => {
-    const productInfo = { _id, product: name, price: price, quantity: 1 };
-    addToCart({ products: [productInfo] });
+
+    addToCart(name, price, 1);
   };
 
   return (
