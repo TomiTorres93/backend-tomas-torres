@@ -1,11 +1,8 @@
 import React from 'react'
 
-export default function ShopItem({ _id, name, description, stock, size, price, addToCart }) {
+export default function ShopItem({ _id, cartIdString, name, description, stock, size, price, addToCart }) {
 
-  const addToCartF = () => {
-
-    addToCart(name, price, 1);
-  };
+  let product = {name: name, price: price, quantity: 1}
 
   return (
     <div className='itemCard'>
@@ -14,7 +11,9 @@ export default function ShopItem({ _id, name, description, stock, size, price, a
       <p> Stock: {stock} </p>
       <p> Talle: {size} </p>
       <p> ${price} </p>
-      <button className='buttonbyn' onClick={addToCartF}>COMPRAR</button>
+      <button className='buttonbyn' onClick={() => {
+        addToCart(cartIdString, product)
+      }}>COMPRAR</button>
     </div>
   );
 }

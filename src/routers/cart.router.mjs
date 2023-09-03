@@ -37,9 +37,7 @@ router.post('/', async (req, res) => {
 router.put('/:cid', async (req, res) => {
     try {
         const cartId = req.params.cartId;
-        const { product } = req.body;
-        
-        
+        const { product } = req.body;        
         const updatedCart = await cartService.addToCart(cartId, product);
         res.status(200).send({ result: 'success', payload: updatedCart });
     } catch (error) {
@@ -49,11 +47,12 @@ router.put('/:cid', async (req, res) => {
 });
 
 
+
 // Obtener un carrito por su ID
 router.get('/:id', async (req, res) => {
     try {
         const cartId = req.params.id;
-        const cart = await cartService.getById(cartId);
+        const cart = await cartService.getCartsById(cartId);
         if (!cart) {
             return res.status(404).send({ error: 'Carrito no encontrado' });
         }
@@ -65,7 +64,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-// router.put('/:cid', cartService.updateCart)
+
 // router.delete('/:cid', cartService.deleteProducts)
 // router.put('/:cid/products/:pid', cartService.updateProductQuantity)
 

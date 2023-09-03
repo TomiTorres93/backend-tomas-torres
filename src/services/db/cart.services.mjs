@@ -30,19 +30,22 @@ export default class CartsService {
 
     createCart = async () => {
         try {
-          const newCart = await cartModel.create({ products: [] }); // Crea un carrito con el campo "products" inicialmente vacío
+          const newCart = await cartModel.create({ products: [] });
           return newCart;
         } catch (error) {
           console.error("Error al crear el carrito:", error);
           throw error;
         }
       };
+      
 
+      
+      // Corrección en addToCart para que utilice el cartId pasado como parámetro
       addToCart = async (cartId, productInfo) => {
         try {
           const updatedCart = await cartModel.findByIdAndUpdate(
             cartId,
-            { $push: { products: productInfo } }, // Agrega el producto al array "products" del carrito
+            { $push: { products: productInfo } }, 
             { new: true }
           );
           return updatedCart;
@@ -52,23 +55,26 @@ export default class CartsService {
         }
       };
 
+      
+    // updateCart = async (cartId, productUpdated) => {
+    //     try {
+    //         let updateProductResult = await cartModel.updateOne({ _id: cartId }, productUpdated)
+    //         return updateProductResult
+    //     } catch (error) {
+    //         return error
+    //     }
+    // }
+
     getCartsById = async (cartId) => {
         try {
-            let productByIdResult = await cartModel.findById(cartId)
+            let productByIdResult = await cartModel.findById(cartId).populate('products')
+         
             return productByIdResult
         } catch (error) {
             return error
         }
     }
 
-    updateCart = async (cartId, productUpdated) => {
-        try {
-            let updateProductResult = await cartModel.updateOne({ _id: cartId }, productUpdated)
-            return updateProductResult
-        } catch (error) {
-            return error
-        }
-    }
 
     updateCartProductById = async (cartId, productUpdatedId, quantity) => {
         try {

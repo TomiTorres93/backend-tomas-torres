@@ -23,9 +23,8 @@ const stringTypeSchemaNonUniqueRequired = {
 
 const cartSchema = new mongoose.Schema({
     products: [{
-        product: stringTypeSchemaNonUniqueRequired,
-        price: numberTypeSchemaNonUniqueRequired,
-        quantity: numberTypeSchemaNonUniqueRequired
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product', // Referencia al modelo de Product
     }]
   
 });

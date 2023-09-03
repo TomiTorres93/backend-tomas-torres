@@ -2,7 +2,7 @@ import React from 'react'
 import ShopItem from './ShopItem'
 import { Button } from '@mui/material'
 
-export default function ShopList( { items, addToCart, sortFunction, paginationData, handlePreviousPage, handleNextPage } ) {
+export default function ShopList( { items, cartIdString, addToCart, sortFunction, paginationData, handlePreviousPage, handleNextPage } ) {
   
 
   return (
@@ -24,7 +24,7 @@ export default function ShopList( { items, addToCart, sortFunction, paginationDa
         
       items.map((item, index) => 
         
-       <ShopItem key={index} {...item} addToCart={addToCart} />
+       <ShopItem key={index} {...item} addToCart={addToCart} cartIdString={cartIdString} />
        
         )
         )}

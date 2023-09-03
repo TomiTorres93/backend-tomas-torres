@@ -36,11 +36,14 @@ export default function ShopListCont() {
   };
 
   const [cartAPIdata, setCartAPIdata] = useState([])
+  
+  const [cartsPaginationData, setCartsPaginationData] = useState([])
   const cartAPIget = async () => {
     try {
       const response = await fetch(`http://localhost:3001/api/carts`);
       const data = await response.json();
       setCartAPIdata(data.payload)
+
     } catch (error) {
       console.error('Error al obtener datos:', error);
     }
@@ -91,6 +94,7 @@ export default function ShopListCont() {
   
         if (response.ok) {
           const data = await response.json();
+          console.log(data.payload)
           setCartId(data.payload._id); 
           console.log('Carrito creado exitosamente');
         } else {
@@ -101,44 +105,51 @@ export default function ShopListCont() {
         console.error('Error al crear carrito:', error);
       }
     };
+
+
+    const cartIdString = cartId ? cartId.toString() : ''; // Convierte cartId a cadena si no es nulo
+
   
     // Función para agregar un producto al carrito
-    const addToCart = async ( productName, productPrice, quantity) => {
+    const addToCart = async (cartIdString, productInfo) => {
       if (!cartId) {
-              await createCart();
+        await createCart().then( async () => {
+           await fetch(`http://localhost:3001/api/carts/${cartIdString}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify([{ product: productInfo.name, price: productInfo.price, quantity: productInfo.quantity }])
+          });
+        
+        }
+                  // Enviar los datos actualizados al servidor
+        )
+      
       }
       try {
-        // Obtener los datos actuales del carrito
-        const response = await fetch(`http://localhost:3001/api/carts/${cartId}`);
-        const cartData = await response.json();
 
-        console.log(cartData)
+
+
+        // Obtener el carrito con los productos poblados
+        const cart = await fetch(`http://localhost:3001/api/carts/${cartIdString}`);
+        const cartData = await cart.json();
     
-        // Agregar el nuevo producto al array de productos
-        const updatedProducts = [
-          ...cartData.products,
-          { product: productName, price: productPrice, quantity: quantity }
-        ];
+        console.log(cart);
     
+
         // Enviar los datos actualizados al servidor
-        const updateResponse = await fetch(`http://localhost:3001/api/carts/${cartId}`, {
+          await fetch(`http://localhost:3001/api/carts/${cartIdString}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ products: updatedProducts }),
+          body: JSON.stringify([{ product: productInfo.name, price: productInfo.price, quantity: productInfo.quantity }])
         });
-    
-        if (updateResponse.ok) {
-          console.log('Producto agregado al carrito exitosamente');
-        } else {
-          console.error('Error al agregar producto al carrito');
-        }
       } catch (error) {
         console.error('Error al agregar producto al carrito:', error);
       }
     };
-  
 
 
 
@@ -283,7 +294,7 @@ export default function ShopListCont() {
         </div>
 
 
-        <ShopList addToCart={addToCart} items={items} paginationData={paginationData} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage} sortFunction={sortFunction} />
+        <ShopList addToCart={addToCart} cartIdString={cartIdString} items={items} paginationData={paginationData} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage} sortFunction={sortFunction} />
 
 
       </div>
