@@ -143,8 +143,6 @@ export default function ShopListCont() {
     };
 
 
-    
-    console.log(cart)
 
 
 
@@ -223,7 +221,10 @@ export default function ShopListCont() {
 
   return (
     <div>
+
       <h1 className='tittle'>PRODUCTOS</h1>
+
+      
 
       {/* <button onClick={getDataFromDB}>Obtener Datos</button>  */}
 
@@ -286,6 +287,12 @@ export default function ShopListCont() {
       <div className='column'>
         <div className='row'>
           <Input onChange={(e) => setSearch(e.target.value)} placeholder='Buscá una prenda...' className='input' /> <button className='buttonbyn' onClick={searchFunction}> BUSCAR </button> <button className='buttonbyn' onClick={closeSearch}> CERRAR BÚSQUEDA </button>
+          {idString && (
+        <Link to={`/carts/${idString}`}><img width="15" height="15" src="https://img.icons8.com/fluency-systems-regular/48/shopping-cart--v1.png" alt="shopping-cart--v1"/> </Link>
+      )} 
+      {cart && (
+        <p className='cartCount'> {cart.length === 0 ? "+" : cart.length} </p>
+      )}
         </div>
 
 

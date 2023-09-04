@@ -25,6 +25,7 @@ function App() {
           <Routes>
             <Route path='/products' element={<ShopListCont />} ></Route>
             <Route path='/carts' element={<CartListCont />} ></Route>
+            <Route path='/carts/:id' element={<CartListCont />} ></Route>
           </Routes>
     </div>
     </CartContextProvider>

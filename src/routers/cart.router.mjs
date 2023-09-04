@@ -11,10 +11,10 @@ router.get('/', async (req, res) => {
     const query = req.query;
 
     try {
-            const carts = await cartService.getCarts(
+        const carts = await cartService.getCarts(
         )
 
-        res.send({ status: 'success', payload: carts});
+        res.send({ status: 'success', payload: carts });
     } catch (error) {
         console.error(error);
         res.status(500).send({ error: error, message: "No se pudo obtener los items." });
@@ -25,8 +25,8 @@ router.get('/', async (req, res) => {
 // Crear un carrito nuevo
 router.post('/', async (req, res) => {
     try {
-        const { product } = req.body;  
-        let newCart = await cartService.createCart({ products: [product] }); 
+        const { product } = req.body;
+        let newCart = await cartService.createCart({ products: [product] });
         res.status(201).send({ result: 'success', payload: newCart });
     } catch (error) {
         console.error("No se pudo crear el carrito con mongoose: " + error);
@@ -54,27 +54,26 @@ router.get('/:id', async (req, res) => {
 router.put('/:cid', async (req, res) => {
     try {
         const cartId = req.params.cid;
-        const { product } = req.body;      
-        const cart = await cartService.getCartsById(cartId);  
-        console.log(cart)
-   
-        if(cart){
-            let lastProduct = product.slice(-1)[0]
-            let comparison = cart.products.find(e => e.name === lastProduct.name)
-            let deletedArr = cart.products.filter(e => e.name !== comparison.name)
-            comparison.quantity+=1 
-            deletedArr.push(comparison)
-          
+        const { product } = req.body;
+        const cart = await cartService.getCartsById(cartId);
+        let lastProduct = product.slice(-1)[0]
+        let filter = cart.products.find(e => e.name === lastProduct.name)
+
+        if (filter) {
+            let deletedArr = cart.products.filter(e => e.name !== filter.name)
+            filter.quantity += 1
+            deletedArr.push(filter)
             const updatedCart = await cartService.addToCart(cartId, deletedArr);
             res.status(200).send({ result: 'success', payload: updatedCart });
-        } else {
+        } else if (!filter && cart.products.length === 0) {
             const updatedCart = await cartService.addToCart(cartId, product);
             res.status(200).send({ result: 'success', payload: updatedCart });
+        } else if (!filter && cart.products.length > 0) {
+            let newUpdateArr = [...cart.products, product[product.length - 1]]
+            const updatedCart = await cartService.addToCart(cartId, newUpdateArr);
+            res.status(200).send({ result: 'success', payload: updatedCart });
         }
-  
-         
 
-console.log(product)
     } catch (error) {
         console.error("No se pudo agregar el producto al carrito con mongoose: " + error);
         res.status(500).send({ error: "No se pudo agregar producto al carrito con mongoose", message: error });
