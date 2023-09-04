@@ -37,7 +37,7 @@ export default class CartsService {
           throw error;
         }
       };
-      
+       
 
       
       // Corrección en addToCart para que utilice el cartId pasado como parámetro
@@ -45,8 +45,8 @@ export default class CartsService {
         try {
           const updatedCart = await cartModel.findByIdAndUpdate(
             cartId,
-            { $push: { products: productInfo } }, 
-            { new: true }
+          { products: productInfo } 
+     
           );
           return updatedCart;
         } catch (error) {

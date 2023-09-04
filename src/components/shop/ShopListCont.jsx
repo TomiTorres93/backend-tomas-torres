@@ -5,7 +5,7 @@ import ShopList from './ShopList';
 
 
 export default function ShopListCont() {
-
+  const [cart, setCart] = useState([]);
   const [cartId, setCartId] = useState(null); 
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState('');
@@ -80,7 +80,7 @@ export default function ShopListCont() {
 
   
   /// CARRITO
-
+ const [cartPayload, setCartPayload] = useState([])
     // Función para crear un carrito nuevo
     const createCart = async () => {
       try {
@@ -89,14 +89,14 @@ export default function ShopListCont() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ cart: { products: [] } }), 
+          body: JSON.stringify(), 
         });
   
         if (response.ok) {
           const data = await response.json();
-          console.log(data.payload)
           setCartId(data.payload._id); 
-          console.log('Carrito creado exitosamente');
+          setCartPayload(data.payload.products)
+          return data.payload;
         } else {
           console.error('Error al crear carrito');
         }
@@ -107,49 +107,44 @@ export default function ShopListCont() {
     };
 
 
-    const cartIdString = cartId ? cartId.toString() : ''; // Convierte cartId a cadena si no es nulo
-
+   const cartIdString = cartId ? cartId.toString() : ''; // Convierte cartId a cadena si no es nulo
+   const [idString, setIdString] = useState([])
+ 
   
     // Función para agregar un producto al carrito
     const addToCart = async (cartIdString, productInfo) => {
-      if (!cartId) {
-        await createCart().then( async () => {
-           await fetch(`http://localhost:3001/api/carts/${cartIdString}`, {
+      try {
+        // Verificar si el carrito existe
+
+        if (!cartId) {
+          // Si no existe, crea un nuevo carrito y obtén su ID
+          const response = await createCart();
+          idString.push(response._id) 
+        }
+
+
+          const updatedCart = [...cart, productInfo];
+          setCart(updatedCart);
+
+          // Enviar los datos actualizados al servidor
+          await fetch(`http://localhost:3001/api/carts/${idString}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify([{ product: productInfo.name, price: productInfo.price, quantity: productInfo.quantity }])
+            body: JSON.stringify({ product: updatedCart }),
           });
-        
-        }
-                  // Enviar los datos actualizados al servidor
-        )
-      
-      }
-      try {
-
-
-
-        // Obtener el carrito con los productos poblados
-        const cart = await fetch(`http://localhost:3001/api/carts/${cartIdString}`);
-        const cartData = await cart.json();
-    
-        console.log(cart);
-    
-
-        // Enviar los datos actualizados al servidor
-          await fetch(`http://localhost:3001/api/carts/${cartIdString}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify([{ product: productInfo.name, price: productInfo.price, quantity: productInfo.quantity }])
-        });
+   
+        // Actualiza el estado del carrito en el cliente
+   
       } catch (error) {
         console.error('Error al agregar producto al carrito:', error);
       }
     };
+
+
+    
+    console.log(cart)
 
 
 
@@ -294,7 +289,7 @@ export default function ShopListCont() {
         </div>
 
 
-        <ShopList addToCart={addToCart} cartIdString={cartIdString} items={items} paginationData={paginationData} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage} sortFunction={sortFunction} />
+        <ShopList addToCart={addToCart} cartIdString={cartIdString}  items={items} paginationData={paginationData} handlePreviousPage={handlePreviousPage} handleNextPage={handleNextPage} sortFunction={sortFunction} />
 
 
       </div>
