@@ -33,6 +33,7 @@ router.post("/register", passport.authenticate('register', {failureRedirect: '/a
 router.post("/login", passport.authenticate('login', {failureRedirect: '/api/sessions/fail-login'}) ,async (req, res) => {
     console.log('Logueando al usuario.');
     const user = req.user
+    res.status(200).send({status: "success", message: "Usuario logueado con éxito."})
     console.log(user)
 
 });

@@ -29,11 +29,22 @@ export default function Login() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email: loginData.user, password: loginData.password }),
-      })
- 
-  
-        
+      }); 
+       console.log(response)
         if (response.status === 200) {
+          try {
+            const response = await fetch(`http://localhost:3001/setCookie?value=${loginData.user}`, {
+              method: 'GET',
+            });
+        
+            if (response.status === 200) {
+              console.log("Cookie asignada con éxito!");
+            } else {
+              console.log("No se pudo asignar la cookie.");
+            }
+          } catch (error) {
+            console.error('Error al asignar la cookie:', error);
+          }
           console.log("Usuario creado con éxito!");
           window.location.replace('/products');
         } else {
