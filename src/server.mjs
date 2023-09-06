@@ -3,8 +3,14 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import itemsRouter from './routers/items.router.mjs';
 import cartRouter from './routers/cart.router.mjs';
+import sessionsRouter from './routers/sessions.router.mjs';
+import usersRouter from './routers/users.router.mjs';
+
+import initializePassport from './config/passport.config.mjs';
+import passport from 'passport';
 import session from 'express-session'
 import cookiesRouter from './routers/cookies.router.mjs';
+
 
 const app = express();
 const corsOptions = {
@@ -23,9 +29,12 @@ app.use(session({
 // Declaración de Routers:
 app.use("/api/items", itemsRouter);
 app.use("/api/carts", cartRouter);
-// app.use("/", cookiesRouter);
-
-
+app.use("/api/sessions", sessionsRouter);
+app.use("/api/cookies", cookiesRouter);
+//Middleware passport
+initializePassport();
+app.use(passport.initialize())
+app.use(passport.session())
 
 const SERVER_PORT = 3001
 app.listen(SERVER_PORT, () => {

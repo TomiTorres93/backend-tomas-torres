@@ -18,14 +18,13 @@ router.use(cookieParser("CookieFirmada"))
 // })
 
 router.get('/setCookie', async (req,res)=>{ // CON FIRMA
-  res.cookie('CoderCookie', 'Esta cookie es poderosa', {maxAge: 30000, signed: true}).send("Cookie asignada con éxito")
+  const cookieValue = req.query.value; 
+  res.cookie('UserCookie', cookieValue , {maxAge: 30000, signed: true}).send("Cookie asignada con éxito")
 })
 
 //getCookie
 
 router.get('/getCookies', async (req,res)=>{
-    // res.send(req.cookies)
-
     //FIRMADAS
     res.send(req.signedCookies)
   })
@@ -67,10 +66,10 @@ router.get('/session', async (req, res)=>{
   })
 
 
-  router.get('/login', async (req, res)=>{
+  router.get('/login', async (req, res, user, pass)=>{
       //Lógica
       const {username, password} = req.query
-      if(username !== "pepe" || password !== "123qwe" ) {
+      if(username !== user|| password !== pass ) {
         return res.status(401).send("Login failed, check your username and password.")
       } else {
         req.session.user = username

@@ -35,6 +35,37 @@ export default function ShopListCont() {
     }
   };
 
+  const [cookies, setCookies] = useState([])
+  const getCookies = async () => {
+    try {
+
+      const response = await fetch(`http://localhost:3001/api/cookies/getCookies`);
+
+      if (response.ok) {
+        const cookiesData = await response.json();
+        console.log('Cookies:', cookiesData);
+
+        setCookies(cookiesData);
+        
+        // Accede a las cookies individuales por su nombre, por ejemplo, 'UserNameCookie'
+        const userNameCookie = cookiesData.UserNameCookie;
+        // Hacer algo con el valor de la cookie aquí
+  
+      } else {
+        console.error('Error al obtener cookies');
+      }
+    } catch (error) {
+      console.error('Error al obtener cookies:', error);
+    } 
+  };
+
+  useEffect(() => {
+    getCookies()
+  }, [])
+  
+
+  console.log(cookies)
+
   const [cartAPIdata, setCartAPIdata] = useState([])
   
   const [cartsPaginationData, setCartsPaginationData] = useState([])
