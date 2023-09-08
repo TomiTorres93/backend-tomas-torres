@@ -21,7 +21,8 @@ const userSchema = new mongoose.Schema({
     last_name: String,
     email: stringTypeSchemaUniqueRequired,
     password: stringTypeSchemaNonUniqueRequired,
-    age: Number
+    age: Number,
+    loggedBy: String
 });
 
 userSchema.plugin(mongoosePaginate)

@@ -2,6 +2,7 @@ import passport from 'passport';
 import passportLocal from 'passport-local';
 import { userModel } from '../services/db/models/user.model.mjs';
 import { createHash, isValidPassword } from '../utils.mjs';
+import  GitHubStrategy from 'passport-github2'
 
 
 // TODO: Implementacion passport
@@ -10,7 +11,6 @@ const localStrategy = passportLocal.Strategy
 const initializePassport = () => {
 //REGISTER
 passport.use('register', new localStrategy({passReqToCallback: true, usernameField: 'email'},
-
 async (req, username, password, done) => {
   const { first_name, last_name, email, age } = req.body;
   try {
@@ -60,6 +60,46 @@ async (req, username, password, done) => {
 ))
 
 
+//GITHUB STRATEGY
+
+passport.use('github', new GitHubStrategy({
+    clientID: 'Iv1.ad8241c45238ff04',
+    clientSecret: 'a6f528128eb2776017bf090ea478cf765dcf9162',
+    callbackURL: 'http://localhost:3001/api/sessions/githubcallback'
+},
+
+async (accesToken, refreshToken, profile, done) => {
+  console.log("Profile obtenido")
+  console.log(profile)
+
+  try {
+    const user = await userModel.findOne({email: profile._json.email})
+    console.log("Profile encontrado!!")
+
+    if(!user) {
+        let newUser = {
+            first_name: profile._json.name,
+            last_name: '',
+            email: profile._json.email,
+            password: '',
+            age: '',
+            loggedBy: "GitHub"
+        }
+        const result = await userModel.create(newUser)
+        done(null, result)
+    } else {
+     return  done(null, user)
+    }
+
+
+} catch (error) {
+    console.log(error)
+}
+
+
+}
+))
+
 //FUNCIONES DE SERIALIZACIÓN (qué datos del usuario deben almacenarse en la sesión) Y DESERIALIZACIÓN (recuperar los datos del usuario a partir de una sesión)
 
 passport.serializeUser( (user, done) => {
@@ -74,6 +114,9 @@ passport.deserializeUser( async (id, done) => {
     }
    
 })
+
+
+
 
 }
 

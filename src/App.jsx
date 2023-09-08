@@ -6,6 +6,8 @@ import CartContextProvider from './context/CartContext';
 import CartListCont from './components/cart/CartListCont';
 import Login from './components/login/Login';
 import NewUser from './components/login/NewUser';
+import GitHubLogin from './components/login/GitHubLogin';
+import NewUserCreated from './components/login/NewUserCreated';
 
 function App() {
 
@@ -30,8 +32,8 @@ function App() {
             <Route path='/carts/:id' element={<CartListCont />} ></Route>
             <Route path='/users/login' element={<Login />} ></Route>
             <Route path='/newuser' element={<NewUser />} ></Route>
-            <Route path='/newuser/user' element={<NewUser />} ></Route>
-
+            <Route path='/newuser/user' element={<NewUserCreated />} ></Route>
+            <Route path='/users/login/github' element={<GitHubLogin />} ></Route>
           </Routes>
     </div>
     </CartContextProvider>

@@ -27,10 +27,11 @@ export default function NewUser() {
       const getDataFromDB = async () => {
         try {
     
-          const response = await fetch(`http://localhost:3001/api/users`);
+          const response = await fetch(`http://localhost:3001/api/sessions`);
           const data = await response.json();
     
           setUsers(data.payload);
+          console.log(data)
         } catch (error) {
           console.error('Error al obtener datos:', error);
         }
@@ -40,6 +41,24 @@ export default function NewUser() {
         e.preventDefault();
 
       };
+
+
+      const getCookies = async () => {
+        try {
+          const res = await fetch('http://localhost:3001/api/cookies/getCookies');
+          if (res.status === 200) {
+            // Verifica si la respuesta contiene las cookies
+            const cookies = await res.json();
+            console.log("Cookies obtenidas:", cookies);
+          } else {
+            console.log("Error al obtener las cookies. Código de estado:", res.status);
+          }
+        } catch (error) {
+          console.error('Error al realizar la solicitud:', error);
+        }
+      };
+      
+      
       const createNewUser = async () => {
         try {
           const response = await fetch('http://localhost:3001/api/sessions/register', {
@@ -49,12 +68,20 @@ export default function NewUser() {
             },
             body: JSON.stringify(newUser),
           })
-          console.log(response.status)
+      
             if (response.status === 201) {
-            const json = await response.json();
-            console.log("Usuario creado con éxito!");
-            getDataFromDB();
-            window.location.replace('/users/login');
+              try {
+                const res = await fetch(`http://localhost:3001/api/cookies/setCookie?value=${newUser.email}`)
+                console.log(res)
+                console.log("cookie existosa!");
+
+    
+              }
+              catch (error) {
+                console.error('Error al guardar la cookie:', error);
+              }
+
+
           } else {
             console.log("No se pudo crear el usuario!");
           }
@@ -70,7 +97,7 @@ export default function NewUser() {
   
     return (
       <div>
-        <button onClick={getDataFromDB}>get data</button>
+        <button onClick={getCookies}>get data</button>
         <h2>Registrarse</h2>
         <form onSubmit={handleSubmit}>
           <div>

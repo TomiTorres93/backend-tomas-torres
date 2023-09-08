@@ -1,7 +1,8 @@
 import { Router } from "express";
 import cookieParser from "cookie-parser";
+import UsersService from "../services/db/users.services.mjs";
 
-
+const UserService = new UsersService();
 
 const router = Router();
 
@@ -9,7 +10,7 @@ const router = Router();
 // router.use(cookieParser())
 
 // Con firma
-router.use(cookieParser("CookieFirmada"))
+router.use(cookieParser("UserCookie"))
 
 //setCookie
 
@@ -17,12 +18,29 @@ router.use(cookieParser("CookieFirmada"))
 //   res.cookie('CoderCookie', 'Esta cookie es poderosa', {maxAge: 30000}).send("Cookie asignada con éxito")
 // })
 
-router.get('/setCookie', async (req,res)=>{ // CON FIRMA
+router.post('/setCookie', async (req,res)=>{ // CON FIRMA
   const cookieValue = req.query.value; 
-  res.cookie('UserCookie', cookieValue , {maxAge: 30000, signed: true}).send("Cookie asignada con éxito")
+  res.cookie('UserCookie', cookieValue , {maxAge: 300000, signed: true}).send("Cookie asignada con éxito")
 })
 
 //getCookie
+
+
+router.get(`/getUserData`, async (req, res) => {
+  const userEmail = req.signedCookies.UserCookie;
+  try {
+    let matchedUser = await UserService.getUserByEmail(userEmail);
+    if (matchedUser) {
+      res.status(200).send({ match: matchedUser }); // Enviar el valor dentro de un objeto si se encuentra un usuario
+    } else {
+      res.status(404).send({ message: "Usuario no encontrado" }); // Usuario no encontrado
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: error, message: "No se pudo obtener el usuario." });
+  }
+});
+
 
 router.get('/getCookies', async (req,res)=>{
     //FIRMADAS

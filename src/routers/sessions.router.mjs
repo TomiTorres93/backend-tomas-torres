@@ -1,9 +1,11 @@
 import { Router } from 'express';
 import { userModel } from '../services/db/models/user.model.mjs';
 import { createHash, isValidPassword } from '../utils.mjs';
+import cookieParser from "cookie-parser";
 import passport from 'passport';
 
 const router = Router();
+router.use(cookieParser("UserCookie"))
 
 router.get("/",  async (req, username, password, done) => {
 
@@ -25,18 +27,63 @@ router.get("/",  async (req, username, password, done) => {
     
 });
 
-router.post("/register", passport.authenticate('register', {failureRedirect: '/api/sessions/fail-register'}), async (req, res) => {
+// Ruta para configurar la cookie después de una autenticación exitosa
+router.get('/setCookie', (req, res) => {
+    const cookieValue = req.user.email; // Usa el email del usuario o la información que desees almacenar en la cookie
+    res.cookie('UserCookie', cookieValue, { signed: true, maxAge: 300000 }); // Configura la cookie
+    res.send("Cookie asignada con éxito");
+  });
+  
+  // Ruta para registrar un nuevo usuario
+  router.post("/register", passport.authenticate('register', {
+    failureRedirect: '/api/sessions/fail-register',
+    successRedirect: '/setCookie', // Redirige aquí después de una autenticación exitosa
+  }), async (req, res) => {
     console.log('Registrando nuevo usuario.');
-    res.status(201).send({status: "success", message: "Usuario creado con éxito."})
-});
+    res.status(201).send({ status: "success", message: "Usuario creado con éxito." });
+  });
+  
+  // Ruta para iniciar sesión
+  router.post("/login", passport.authenticate('login', {
+    failureRedirect: '/api/sessions/fail-login',
+    successRedirect: '/setCookie', // Redirige aquí después de una autenticación exitosa
+  }), async (req, res) => {
+    console.log('Logueando al usuario.');
+    const user = req.user;
+    res.status(200).send({ status: "success", message: "Usuario logueado con éxito." });
+    console.log(user);
+  });
+  
 
-router.post("/login", passport.authenticate('login', {failureRedirect: '/api/sessions/fail-login'}) ,async (req, res) => {
+router.get('/github', passport.authenticate('github', {scope: 'user:email'}), async (req, res) => {
+
+    res.redirect('https://github.com/login/oauth/authorize?client_id=Iv1.ad8241c45238ff04&redirect_uri=http://localhost:3001/api/sessions/githubcallback&scope=user:email');
+
+
+} )
+
+router.get('/githubcallback', passport.authenticate('github', {scope: 'user:email'}), async (req, res) => {
+    const user = req.user;
+    req.session.user = {
+        name: `${user.first_name} ${user.last_name}`,
+        email: user.email,
+        age: user.age
+    }
+
+    req.session.admin = true
+    res.redirect('/users')
+ } ) 
+
+router.post("/github", passport.authenticate('github', {failureRedirect: '/api/sessions/fail-login'}) ,async (req, res) => {
     console.log('Logueando al usuario.');
     const user = req.user
-    res.status(200).send({status: "success", message: "Usuario logueado con éxito."})
+    res.status(200).send({status: "success", message: "Usuario logueado con GitHub exitosamente."})
     console.log(user)
 
 });
+
+
+
 
 //RUTAS GET
 

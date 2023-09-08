@@ -31,25 +31,10 @@ export default function Login() {
         body: JSON.stringify({ email: loginData.user, password: loginData.password }),
       }); 
        console.log(response)
-        if (response.status === 200) {
-          try {
-            const response = await fetch(`http://localhost:3001/setCookie?value=${loginData.user}`, {
-              method: 'GET',
-            });
-        
-            if (response.status === 200) {
-              console.log("Cookie asignada con éxito!");
-            } else {
-              console.log("No se pudo asignar la cookie.");
-            }
-          } catch (error) {
-            console.error('Error al asignar la cookie:', error);
-          }
+       
           console.log("Usuario creado con éxito!");
-          window.location.replace('/products');
-        } else {
-          console.log("No se pudo crear el usuario.");
-        }
+          window.location.replace('/newuser/user');
+  
      
     } catch (error) {
       console.error('Error al obtener datos:', error);
@@ -92,6 +77,7 @@ export default function Login() {
         />
       </div>
       <button onClick={login} className='buttonbyn' type="submit">Iniciar Sesión</button>
+      <Link className='buttonbyn' to="/users/login/github" >LOGIN CON GITHUB</Link>
    
   </div>
   )

@@ -5,11 +5,13 @@ import itemsRouter from './routers/items.router.mjs';
 import cartRouter from './routers/cart.router.mjs';
 import sessionsRouter from './routers/sessions.router.mjs';
 import usersRouter from './routers/users.router.mjs';
+import cookieParser from "cookie-parser";
 
 import initializePassport from './config/passport.config.mjs';
 import passport from 'passport';
 import session from 'express-session'
 import cookiesRouter from './routers/cookies.router.mjs';
+import MongoStore from 'connect-mongo';
 
 
 const app = express();
@@ -22,7 +24,12 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
-  secret: 'secretCoder',
+  store: MongoStore.create({
+    mongoUrl: 'mongodb+srv://tomitorres93:rodolfowalsh93@cluster0.xhrxoec.mongodb.net/test',
+    mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+    ttl: 15
+  }),
+  secret: 'UserCookie',
   resave: true,
   saveUninitialized: true
 }))
@@ -30,11 +37,13 @@ app.use(session({
 app.use("/api/items", itemsRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/sessions", sessionsRouter);
+app.use("/api/users", usersRouter);
 app.use("/api/cookies", cookiesRouter);
 //Middleware passport
 initializePassport();
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(cookieParser("UserCookie"))
 
 const SERVER_PORT = 3001
 app.listen(SERVER_PORT, () => {
@@ -45,8 +54,6 @@ const connectMongoDB = async () => {
   try {
     await mongoose.connect('mongodb+srv://tomitorres93:rodolfowalsh93@cluster0.xhrxoec.mongodb.net/test');
 
-
-    console.log("Conectado con exito a MongoDB usando Moongose.");
   
   } catch (error) {
     console.error("No se pudo conectar a la BD usando Moongose: " + error);
