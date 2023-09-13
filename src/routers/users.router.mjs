@@ -54,6 +54,7 @@ router.post('/', async (req, res) => {
     try {
         let {first_name, last_name, email, password, age  } = req.body
         let user = await UserService.save({ first_name, last_name, email, password, age });
+        console.log(res)
         res.status(201).send({ result: 'success', payload: user })
     } catch (error) {
         console.error("No se pudo crear usuarios con moongose: " + error);

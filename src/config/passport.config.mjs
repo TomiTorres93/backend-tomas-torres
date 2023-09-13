@@ -35,6 +35,37 @@ async (req, username, password, done) => {
 }
 ))
 
+//UPDATE
+passport.use('modify', new localStrategy({ passReqToCallback: true, usernameField: 'email' },
+  async (req, username, password, done) => {
+    const { first_name, last_name, age, email } = req.body;
+
+    try {
+      const user = await userModel.findOne({ email });
+
+      if (!user) {
+        return done(null, false, { message: "El usuario no existe." });
+      }
+
+      // Modificar los datos del usuario
+      user.first_name = first_name;
+      user.last_name = last_name;
+      user.age = age;
+      user.email = email;
+      user.password =  createHash(password)
+
+
+      // Guardar los cambios en la base de datos
+      await user.save();
+
+      return done(null, user);
+    } catch (error) {
+      return done("Error modificando al usuario: " + error);
+    }
+  }
+));
+
+
 //LOGIN
 passport.use('login', new localStrategy({passReqToCallback: true, usernameField: 'email'},
 

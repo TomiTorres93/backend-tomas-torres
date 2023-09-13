@@ -36,12 +36,18 @@ router.get('/setCookie', (req, res) => {
   
   // Ruta para registrar un nuevo usuario
   router.post("/register", passport.authenticate('register', {
-    failureRedirect: '/api/sessions/fail-register',
-    successRedirect: '/setCookie', // Redirige aquí después de una autenticación exitosa
+    failureRedirect: '/api/sessions//modify'
   }), async (req, res) => {
     console.log('Registrando nuevo usuario.');
     res.status(201).send({ status: "success", message: "Usuario creado con éxito." });
   });
+
+  router.post("/modify", passport.authenticate('modify', { failureRedirect: '/modify-failure', successRedirect: '/modify-success' }), async (req, res) => {
+    // La autenticación de la estrategia 'modify' se encargará de modificar el usuario
+    // Si la autenticación es exitosa, el usuario se habrá modificado en la base de datos
+    // Puedes redirigir al usuario a una página de éxito o realizar otras acciones necesarias.
+  });
+  
   
   // Ruta para iniciar sesión
   router.post("/login", passport.authenticate('login', {
@@ -72,8 +78,8 @@ router.get('/githubcallback', passport.authenticate('github', {scope: 'user:emai
 
  
     req.session.admin = true
-    if(!user.email) {
-      res.redirect('http://localhost:3000/users/newuser')
+    if(!user.password) {
+      res.redirect(`http://localhost:3000/users/newuser?${user.email}`)
     } else {
       res.redirect('http://localhost:3000/products')
     }
