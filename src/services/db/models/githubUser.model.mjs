@@ -17,7 +17,7 @@ const stringTypeSchemaNonUniqueRequired = {
 
 
 
-const userSchema = new mongoose.Schema({
+const githubUserSchema = new mongoose.Schema({
     first_name: String,
     last_name: String,
     email: String,
@@ -26,6 +26,6 @@ const userSchema = new mongoose.Schema({
     loggedBy: String
 });
 
-userSchema.plugin(mongoosePaginate)
+githubUserSchema.plugin(mongoosePaginate)
 
-export const userModel = mongoose.model(collectionName, userSchema);
+export const githubUserModel = mongoose.model(collectionName, githubUserSchema);

@@ -8,6 +8,7 @@ import Login from './components/login/Login';
 import NewUser from './components/login/NewUser';
 import GitHubLogin from './components/login/GitHubLogin';
 import NewUserCreated from './components/login/NewUserCreated';
+import CompleteRegistration from './components/login/CompleteRegistration';
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
             <Route path='/newuser' element={<NewUser />} ></Route>
             <Route path='/newuser/user' element={<NewUserCreated />} ></Route>
             <Route path='/users/login/github' element={<GitHubLogin />} ></Route>
+            <Route path='/users/newuser' element={<CompleteRegistration />} ></Route>
           </Routes>
     </div>
     </CartContextProvider>

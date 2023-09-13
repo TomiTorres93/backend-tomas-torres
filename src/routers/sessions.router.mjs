@@ -70,8 +70,13 @@ router.get('/githubcallback', passport.authenticate('github', {scope: 'user:emai
         age: user.age
     }
 
+ 
     req.session.admin = true
-    res.redirect('/users')
+    if(!user.email) {
+      res.redirect('http://localhost:3000/users/newuser')
+    } else {
+      res.redirect('http://localhost:3000/products')
+    }
  } ) 
 
 router.post("/github", passport.authenticate('github', {failureRedirect: '/api/sessions/fail-login'}) ,async (req, res) => {

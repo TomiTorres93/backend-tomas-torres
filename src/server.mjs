@@ -16,9 +16,14 @@ import MongoStore from 'connect-mongo';
 
 const app = express();
 const corsOptions = {
-  origin: 'http://localhost:3000', // Especifica el dominio permitido
-  methods: 'GET,POST,PUT,DELETE', // Especifica los métodos permitidos
+  origin: 'http://localhost:3000', 
+  methods: 'GET,POST,PUT,DELETE', 
 };
+
+app.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -44,6 +49,7 @@ initializePassport();
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(cookieParser("UserCookie"))
+
 
 const SERVER_PORT = 3001
 app.listen(SERVER_PORT, () => {

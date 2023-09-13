@@ -68,7 +68,7 @@ passport.use('github', new GitHubStrategy({
     callbackURL: 'http://localhost:3001/api/sessions/githubcallback'
 },
 
-async (accesToken, refreshToken, profile, done) => {
+async (accessToken, refreshToken, profile, done) => {
   console.log("Profile obtenido")
   console.log(profile)
 
@@ -107,7 +107,7 @@ passport.serializeUser( (user, done) => {
 })
 passport.deserializeUser( async (id, done) => {
     try {
-        let user = await userModel.findOne(id)
+        let user = await userModel.findById(id)
         done(null, user)
     } catch (error) {
         console.error("Error deserializando el usuario: " + error)

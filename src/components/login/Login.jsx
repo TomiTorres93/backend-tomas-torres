@@ -42,6 +42,24 @@ export default function Login() {
   };
   
   
+  const GitHubLog = async () => {
+    try {
+        const response = await fetch('http://localhost:3001/api/sessions/github')
+         console.log(response)
+          if (response.status === 200) {
+         
+            console.log("Usuario creado con éxito!");
+   
+          } else {
+            console.log("No se pudo crear el usuario.");
+          }
+       
+      } catch (error) {
+        console.error('Error al obtener datos:', error);
+      }
+    };
+
+   
 
 
   return (
@@ -76,9 +94,11 @@ export default function Login() {
             required
         />
       </div>
+      <div className='row marginTop'>
       <button onClick={login} className='buttonbyn' type="submit">Iniciar Sesión</button>
-      <Link className='buttonbyn' to="/users/login/github" >LOGIN CON GITHUB</Link>
-   
+
+      <a href="http://localhost:3001/api/sessions/github" className='buttonbyn'>Login con GitHub </a> <img className='gitLogo' width="20" height="20" src="https://img.icons8.com/ios-glyphs/30/github.png" alt="github"/>
+      </div>
   </div>
   )
 }
