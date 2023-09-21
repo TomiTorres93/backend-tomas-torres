@@ -19,56 +19,41 @@ export default function Login() {
     });
   };
 
+const [userData, setUserData] = useState(undefined)
+  const jwt = async () => {
 
-
-  const login = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/sessions/login', {
+      const response = await fetch('http://localhost:3001/api/jwt/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ email: loginData.user, password: loginData.password }),
       }); 
-       console.log(response)
-       
-          console.log("Usuario creado con éxito!");
-          window.location.replace('/newuser/user');
-  
+
+      if(response.status === 200) {
+        let json = await response.json()
+        setUserData(json.id)
+          window.location.replace(`/dashboard`);  
+      } 
      
     } catch (error) {
       console.error('Error al obtener datos:', error);
     }
   };
-  
-  
-  const GitHubLog = async () => {
-    try {
-        const response = await fetch('http://localhost:3001/api/sessions/github')
-         console.log(response)
-          if (response.status === 200) {
-         
-            console.log("Usuario creado con éxito!");
-   
-          } else {
-            console.log("No se pudo crear el usuario.");
-          }
-       
-      } catch (error) {
-        console.error('Error al obtener datos:', error);
-      }
-    };
+
+
+ 
+
+
 
    
 
 
   return (
     <div>
-        <Link className='buttonbyn' to="/newuser"> Crear nuevo usuario</Link>
-
-
-  
-
+    <Link className='buttonbyn' to="/newuser"> Crear nuevo usuario</Link>
 
     <h2>Iniciar Sesión</h2>
  
@@ -95,7 +80,9 @@ export default function Login() {
         />
       </div>
       <div className='row marginTop'>
-      <button onClick={login} className='buttonbyn' type="submit">Iniciar Sesión</button>
+      <button onClick={() => {
+        jwt()
+      }} className='buttonbyn' type="submit">Iniciar Sesión</button>
 
       <a href="http://localhost:3001/api/sessions/github" className='buttonbyn'>Login con GitHub </a> <img className='gitLogo' width="20" height="20" src="https://img.icons8.com/ios-glyphs/30/github.png" alt="github"/>
       </div>

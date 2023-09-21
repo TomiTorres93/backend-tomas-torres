@@ -5,6 +5,7 @@ import itemsRouter from './routers/items.router.mjs';
 import cartRouter from './routers/cart.router.mjs';
 import sessionsRouter from './routers/sessions.router.mjs';
 import usersRouter from './routers/users.router.mjs';
+import jwtRouter from './routers/jwt.router.mjs';
 import cookieParser from "cookie-parser";
 
 import initializePassport from './config/passport.config.mjs';
@@ -18,12 +19,14 @@ const app = express();
 const corsOptions = {
   origin: 'http://localhost:3000', 
   methods: 'GET,POST,PUT,DELETE', 
+    credentials: true, //included credentials as true
 };
 
 app.all('/*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   next();
 });
+app.use(cookieParser())
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -44,11 +47,11 @@ app.use("/api/carts", cartRouter);
 app.use("/api/sessions", sessionsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/cookies", cookiesRouter);
+app.use("/api/jwt", jwtRouter);
 //Middleware passport
 initializePassport();
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(cookieParser("UserCookie"))
 
 
 const SERVER_PORT = 3001

@@ -1,13 +1,14 @@
 import passport from 'passport';
 import passportLocal from 'passport-local';
 import { userModel } from '../services/db/models/user.model.mjs';
-import { createHash, isValidPassword } from '../utils.mjs';
+import { createHash, isValidPassword, PRIVATE_KEY } from '../utils.mjs';
 import  GitHubStrategy from 'passport-github2'
-
+import jwtStrategy from 'passport-jwt'
 
 // TODO: Implementacion passport
 const localStrategy = passportLocal.Strategy
-  
+const JwtStrategy = jwtStrategy.Strategy
+const ExtractJWT = jwtStrategy.ExtractJwt
 const initializePassport = () => {
 //REGISTER
 passport.use('register', new localStrategy({passReqToCallback: true, usernameField: 'email'},
@@ -47,6 +48,8 @@ passport.use('modify', new localStrategy({ passReqToCallback: true, usernameFiel
         return done(null, false, { message: "El usuario no existe." });
       }
 
+      console.log(first_name, last_name, age, email, password)
+
       // Modificar los datos del usuario
       user.first_name = first_name;
       user.last_name = last_name;
@@ -61,6 +64,7 @@ passport.use('modify', new localStrategy({ passReqToCallback: true, usernameFiel
       return done(null, user);
     } catch (error) {
       return done("Error modificando al usuario: " + error);
+      
     }
   }
 ));
@@ -89,6 +93,7 @@ async (req, username, password, done) => {
 
  }
 ))
+
 
 
 //GITHUB STRATEGY
@@ -130,6 +135,38 @@ async (accessToken, refreshToken, profile, done) => {
 
 }
 ))
+
+// Funcion para hacer la extraccion de la cookie
+const cookieExtractor = req => {
+  let token = null;
+
+  if (req && req.cookies) {
+      console.log(req.cookies);
+      token = req.cookies['jwtCookieToken']
+  }
+  return token;
+}
+
+//LOGIN W/ JWT
+   //Estrategia de obtener Token JWT por Cookie:
+   passport.use('jwt', new JwtStrategy(
+    {
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey: PRIVATE_KEY
+    },
+    // Ambiente Async
+    async (jwt_payload, done) => {
+
+        try {
+            return done(null, jwt_payload.user)// Si todo va bien, nuestro user va estar dentro del jwt_payload
+        } catch (error) {
+            console.error(error);
+            return done(error);
+        }
+    }
+
+));
+
 
 //FUNCIONES DE SERIALIZACIÓN (qué datos del usuario deben almacenarse en la sesión) Y DESERIALIZACIÓN (recuperar los datos del usuario a partir de una sesión)
 

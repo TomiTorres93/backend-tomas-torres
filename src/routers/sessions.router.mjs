@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { userModel } from '../services/db/models/user.model.mjs';
-import { createHash, isValidPassword } from '../utils.mjs';
+import { createHash, generateJWToken, isValidPassword } from '../utils.mjs';
 import cookieParser from "cookie-parser";
 import passport from 'passport';
 
@@ -51,13 +51,23 @@ router.get('/setCookie', (req, res) => {
   
   // Ruta para iniciar sesión
   router.post("/login", passport.authenticate('login', {
-    failureRedirect: '/api/sessions/fail-login',
-    successRedirect: '/setCookie', // Redirige aquí después de una autenticación exitosa
+    failureRedirect: '/api/sessions/fail-login'
   }), async (req, res) => {
     console.log('Logueando al usuario.');
     const user = req.user;
     res.status(200).send({ status: "success", message: "Usuario logueado con éxito." });
-    console.log(user);
+    req.session.user = {
+      name: `${user.first_name} ${user.last_name}`,
+      email: user.email,
+      age: user.age
+  }
+
+  // //JWT
+  // const access_token = generateJWToken(user)
+  // console.log("token:" + access_token)
+  // res.send({access_token: access_token})
+
+
   });
   
 
