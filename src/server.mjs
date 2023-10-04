@@ -14,10 +14,11 @@ import session from 'express-session'
 import cookiesRouter from './routers/cookies.router.mjs';
 import MongoStore from 'connect-mongo';
 
+import MongoSingleton from './config/db.mjs';
 
 const app = express();
 const corsOptions = {
-  origin: 'http://localhost:3000', 
+  origin: 'http://localhost:3002',
   methods: 'GET,POST,PUT,DELETE', 
     credentials: true, //included credentials as true
 };
@@ -59,19 +60,28 @@ app.listen(SERVER_PORT, () => {
   console.log("Servidor escuchando por el puerto: " + SERVER_PORT);
 });
 // Mueve la conexión a MongoDB fuera del servidor
-const connectMongoDB = async () => {
-  try {
-    await mongoose.connect('mongodb+srv://tomitorres93:rodolfowalsh93@cluster0.xhrxoec.mongodb.net/test');
+// const connectMongoDB = async () => {
+//   try {
+//     await mongoose.connect('mongodb+srv://tomitorres93:rodolfowalsh93@cluster0.xhrxoec.mongodb.net/test');
 
   
+//   } catch (error) {
+//     console.error("No se pudo conectar a la BD usando Moongose: " + error);
+//     process.exit();
+//   }
+// };
+
+// connectMongoDB();
+
+
+const mongoInstance = async () => {
+  try {
+      await MongoSingleton.getInstance();
   } catch (error) {
-    console.error("No se pudo conectar a la BD usando Moongose: " + error);
-    process.exit();
+      console.log(error);
   }
 };
-
-connectMongoDB();
-
+mongoInstance();
 
 
 

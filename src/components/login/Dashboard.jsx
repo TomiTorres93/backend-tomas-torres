@@ -33,7 +33,8 @@ export default function Dashboard() {
       useEffect(() => {
         userDataById()
        }, [])
-console.log(userData)
+
+
 
   return (
     <div>
