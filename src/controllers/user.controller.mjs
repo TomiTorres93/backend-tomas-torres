@@ -1,5 +1,5 @@
 import { Router } from "express";
-import UsersService from "../services/db/users.services.mjs";
+import UsersService from "../services/dao/users.services.mjs";
 
 const UserService = new UsersService();
 const router = Router();

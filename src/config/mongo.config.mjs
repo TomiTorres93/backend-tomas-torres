@@ -1,11 +1,3 @@
-
-
-// const uri = "mongodb+srv://tomitorres93:<rodolfowalsh93>@cluster0.xhrxoec.mongodb.net/?retryWrites=true&w=majority";
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-
-
-
 import mongoose from 'mongoose';
 
 

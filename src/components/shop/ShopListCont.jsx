@@ -27,7 +27,7 @@ export default function ShopListCont() {
 
       const response = await fetch(url === undefined ? `http://localhost:3001/api/items${searchParams}` : url);
       const data = await response.json();
-
+      console.log(data)
       setItems(data.payload);
       setPaginationData(data.pagination)
     } catch (error) {
@@ -43,8 +43,7 @@ export default function ShopListCont() {
 
       if (response.ok) {
         const cookiesData = await response.json();
-        console.log('Cookies:', cookiesData);
-
+  
         setCookies(cookiesData);
         
         // Accede a las cookies individuales por su nombre, por ejemplo, 'UserNameCookie'
@@ -64,7 +63,7 @@ export default function ShopListCont() {
   }, [])
   
 
-  console.log(cookies)
+
 
   const [cartAPIdata, setCartAPIdata] = useState([])
   

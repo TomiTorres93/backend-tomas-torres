@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function ShopItem({ _id, cartIdString, name, description, stock, size, price, addToCart }) {
 
-  let product = {name: name, price: price, quantity: 1}
+  let product = {name: name, price: price, quantity: 1, id: _id}
 
   return (
     <div className='itemCard'>

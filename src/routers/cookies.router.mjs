@@ -1,6 +1,6 @@
 import { Router } from "express";
 import cookieParser from "cookie-parser";
-import UsersService from "../services/db/users.services.mjs";
+import UsersService from "../services/dao/users.services.mjs";
 
 const UserService = new UsersService();
 

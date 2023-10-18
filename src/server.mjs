@@ -6,6 +6,7 @@ import cartRouter from './routers/cart.router.mjs';
 import sessionsRouter from './routers/sessions.router.mjs';
 import usersRouter from './routers/users.router.mjs';
 import jwtRouter from './routers/jwt.router.mjs';
+import ticketRouter from './routers/ticket.router.mjs';
 import cookieParser from "cookie-parser";
 
 import initializePassport from './config/passport.config.mjs';
@@ -18,7 +19,7 @@ import MongoSingleton from './config/db.mjs';
 
 const app = express();
 const corsOptions = {
-  origin: 'http://localhost:3002',
+  origin: ['http://localhost:3002', 'http://localhost:3001', 'http://localhost:3000'],
   methods: 'GET,POST,PUT,DELETE', 
     credentials: true, //included credentials as true
 };
@@ -49,6 +50,10 @@ app.use("/api/sessions", sessionsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/cookies", cookiesRouter);
 app.use("/api/jwt", jwtRouter);
+app.use("/api/ticket", ticketRouter);
+// // MAILING
+// app.use("/api/email", );
+// app.use("/api/sms", );
 //Middleware passport
 initializePassport();
 app.use(passport.initialize())

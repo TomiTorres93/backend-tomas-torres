@@ -85,6 +85,9 @@
   top: 0rem;
 }
 
+.gap {
+  gap: 1rem;
+}
 
 .buttonbyn {
 
@@ -195,4 +198,19 @@ background: rgb(215, 215, 215);
 .itemCard:hover {
   border: #61dafb 1px solid;
 
+}
+
+
+.cancelStatus {
+  padding: 0.25rem 0.5rem;
+  background-color: rgb(232, 140, 140);
+  color: rgb(218, 32, 32);
+  border: 1px solid rgb(218, 32, 32);
+  font-family: monospace;
+  cursor: pointer;
+  transition: 0.1s all ease-in-out;
+}
+
+.cancelStatus:hover  {
+  background-color: rgb(246, 192, 192);
 }

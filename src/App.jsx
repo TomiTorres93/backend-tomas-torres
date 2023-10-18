@@ -10,6 +10,7 @@ import GitHubLogin from './components/login/GitHubLogin';
 import NewUserCreated from './components/login/NewUserCreated';
 import CompleteRegistration from './components/login/CompleteRegistration';
 import Dashboard from './components/login/Dashboard';
+import Purchase from './components/cart/Purchase';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
             <Route path='/products' element={<ShopListCont />} ></Route>
             <Route path='/carts' element={<CartListCont />} ></Route>
             <Route path='/carts/:id' element={<CartListCont />} ></Route>
+            <Route path='/carts/:id/purchase' element={<Purchase />} ></Route>
             <Route path='/users/login' element={<Login />} ></Route>
             <Route path='/newuser' element={<NewUser />} ></Route>
             <Route path='/newuser/user' element={<NewUserCreated />} ></Route>

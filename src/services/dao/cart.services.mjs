@@ -1,7 +1,4 @@
 import { cartModel } from "./models/cart.model.mjs";
-import { itemModel } from "./models/item.model.mjs";
-
-import { isObjectIdOrHexString } from "mongoose"
 
 
 export default class CartsService {
@@ -85,13 +82,36 @@ export default class CartsService {
         }
     }
 
-    deleteProducts = async (cartId) => {
+    deleteProductsById = async (cartId, updatedCart) => {
         try {
-            let updateProductResult = await cartModel.updateOne({ _id: cartId }, { $set: { products: [] } })
-            console.log(updateProductResult)
-            return updateProductResult
+          const updateProductResult = await cartModel.updateOne(
+            { _id: cartId },
+            { $set: { products: updatedCart } }
+          );
+            if (updateProductResult.nModified > 0) {
+            return { success: true, message: 'Productos eliminados con éxito.' };
+          } else {
+            return { success: false, message: 'Ningún carrito encontrado o ningún producto eliminado.' };
+          }
         } catch (error) {
-            return error
+          return { success: false, message: 'Error al eliminar productos.', error: error };
         }
-    }
+      }
+      
+    deleteAllProducts = async (cartId) => {
+        try {
+          const updateProductResult = await cartModel.updateOne(
+            { _id: cartId },
+            { $set: { products: [] } }
+          );
+            if (updateProductResult.nModified > 0) {
+            return { success: true, message: 'Productos eliminados con éxito.' };
+          } else {
+            return { success: false, message: 'Ningún carrito encontrado o ningún producto eliminado.' };
+          }
+        } catch (error) {
+          return { success: false, message: 'Error al eliminar productos.', error: error };
+        }
+      }
+      
 }

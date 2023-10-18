@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ItemsService from "../services/db/items.services.mjs";
+import ItemsService from "../services/dao/items.services.mjs";
 
 
 const itemService = new ItemsService();
@@ -34,6 +34,24 @@ export const getItemsController =  async (req, res) => {
         res.status(500).send({ error: error, message: "No se pudo obtener los items." });
     }
 }
+
+export const getItemsByIdController =  async (req, res) => {
+
+    try {
+        const itemId = req.params.id;
+        const body = req.body.quantity;
+        const item = await itemService.getItemByIdAndDeduce(itemId, body);
+        console.log(item)
+        if (item.success === false) {
+            return res.status(404).send({ error: 'item no encontrado' });
+        }
+        res.status(200).send(item);
+    } catch (error) {
+        console.error('Error al obtener el item por ID:', error);
+        res.status(500).send({ error: 'Error al obtener el item por ID' });
+    }
+}
+
 
 export const countController = async (req,res)=>{
     try {

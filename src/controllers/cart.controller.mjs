@@ -1,5 +1,5 @@
 import { Router } from "express";
-import cartsService from "../services/db/cart.services.mjs";
+import cartsService from "../services/dao/cart.services.mjs";
 
 
 const cartService = new cartsService();
@@ -83,10 +83,34 @@ export const putController =  async (req, res) => {
 
 
 
+// Elimina un producto al carrito
+
+export const deleteProductsById =  async (req, res) => {
+    try {
+        const cartId = req.params.cid;
+        const { product } = req.body;
+        const cart = await cartService.getCartsById(cartId);
+ 
+        let filter = cart.products.filter(e => e.name !== product)
+
+        const updatedCart = await cartService.deleteProductsById(cartId, filter);
+      
+        res.status(200).send({ result: 'success', payload: updatedCart });
+
+
+    } catch (error) {
+        console.error("No se pudo agregar el producto al carrito con mongoose: " + error);
+        res.status(500).send({ error: "No se pudo agregar producto al carrito con mongoose", message: error });
+    }
+}
+
 
 
 
 // router.delete('/:cid', cartService.deleteProducts)
+
+
+
 // router.put('/:cid/products/:pid', cartService.updateProductQuantity)
 
 

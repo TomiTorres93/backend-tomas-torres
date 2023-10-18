@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { userModel } from '../services/db/models/user.model.mjs';
+import { userModel } from '../services/dao/models/user.model.mjs';
 import { generateJWToken, isValidPassword } from '../utils.mjs';
 import cookieParser from "cookie-parser";
 

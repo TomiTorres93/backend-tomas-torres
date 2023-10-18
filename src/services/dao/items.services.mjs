@@ -25,6 +25,38 @@ export default class ItemsService {
     }
 
 
+        getItemByIdAndDeduce = async (itemId, quantity) => {
+            try {
+
+              const item = await itemModel.findById(itemId);
+          
+              if (!item) {
+                return { success: false, message: 'Producto no encontrado' };
+              }
+          
+              const requestedQuantity = quantity; 
+
+              if (item.stock >= requestedQuantity) {
+
+                item.stock -= requestedQuantity;
+          
+                const updatedItem = await item.save();
+          
+                return { success: true, message: 'Producto actualizado con éxito', updatedItem };
+              } else {
+                return { success: false, message: 'Stock insuficiente' };
+              }
+            } catch (error) {
+              return { success: false, message: 'Error al procesar la solicitud', error };
+            }
+          };
+          
+
+
+    
+
+
+
     save = async (item) => {
         let result = await itemModel.create(item);
         return result;

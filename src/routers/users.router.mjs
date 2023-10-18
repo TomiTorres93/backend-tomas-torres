@@ -1,5 +1,5 @@
 import { Router } from "express";
-import UsersService from "../services/db/users.services.mjs";
+import UsersService from "../services/dao/users.services.mjs";
 import {authToken} from "../utils.mjs"
 import passport from "passport";
 import {authJWTcontroller, userByEmailcontroller, createUsercontroller} from "../controllers/user.controller.mjs";

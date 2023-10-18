@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import CartList from './CartList';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+import { Input, InputLabel } from '@mui/material';
+
 export default function CartListCont() {
 
   const [cartAPIdata, setCartAPIdata] = useState([])
   
   const [cartsPaginationData, setCartsPaginationData] = useState([])
+  const [cart, setCart] = useState(null)
+  const [newTicket, setNewTicket] = useState({
+    code: uuidv4(),
+    purchase_datetime: Date.now(),
+    amount: '',
+    purchaser: '',
+  });
+
+
   const { id } = useParams()
   const cartAPIget = async () => {
     try {
@@ -20,10 +32,9 @@ export default function CartListCont() {
 
   useEffect(() => {
     cartAPIget();
-
   }, []);
 
-  const [cart, setCart] = useState(null)
+
   
   const cartById = async () => {
     try {
@@ -38,33 +49,62 @@ export default function CartListCont() {
 
   useEffect(() => {
     cartById();
-
   }, []);
 
-console.log(cart)
+  useEffect(() => {
+    if(cart) {
+      let total = cart.products.reduce((accumulator, item) => {
+        const productValue = item.price * item.quantity;
+        return accumulator + productValue;
+      }, 0) 
+      setNewTicket({
+        ...newTicket,
+        amount: total,
+      });
+
+    }
+  
+  }, [cart])
+  
+
+  const deleteItem = async (product) => {
+    try {
+  // Enviar los datos actualizados al servidor
+  await fetch(`http://localhost:3001/api/carts/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ product }),
+  })
+  .then(() => {
+    cartById()
+  });
+
+    } catch (error) {
+      console.error('Error al obtener datos:', error);
+    }
+  };
+
 
 
   return (
-    <div>
+    <div className='gap'>
       <h1 className='tittle'>CARRITO</h1>
       {cart && (
         <>
-        <p className='tittle'> Id del carrito: {cart._id} </p>
         <p  className='tittle'>PRODUCTOS</p>
         <div className='row'>
-  
-          {cart.products.map((e, index) => 
-          <div key={index} className='cartItem'>
-            <p> {e.name} </p>
-            <p> ${e.price} </p>
-            <p> Cantidad: {e.quantity} </p>
-          </div>
-          )  
-       }
+        <CartList cart={cart} deleteItem={deleteItem} />
+        
+
         </div>
+
         </>
       )}
-      <CartList />
+
+
+<Link className='buttonbyn' to={`/carts/${id}/purchase`}> Finalizar compra </Link>
     </div>
   )
 }
