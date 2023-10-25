@@ -8,13 +8,12 @@ import usersRouter from './routers/users.router.mjs';
 import jwtRouter from './routers/jwt.router.mjs';
 import ticketRouter from './routers/ticket.router.mjs';
 import cookieParser from "cookie-parser";
-
 import initializePassport from './config/passport.config.mjs';
 import passport from 'passport';
 import session from 'express-session'
 import cookiesRouter from './routers/cookies.router.mjs';
 import MongoStore from 'connect-mongo';
-
+import compression from 'express-compression';
 import MongoSingleton from './config/db.mjs';
 
 const app = express();
@@ -28,8 +27,11 @@ app.all('/*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   next();
 });
-app.use(cookieParser())
 
+app.use(cookieParser())
+app.use(compression({
+  brotli: {enabled:true, zlib:{}}
+}))
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
