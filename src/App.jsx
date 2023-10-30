@@ -11,6 +11,7 @@ import NewUserCreated from './components/login/NewUserCreated';
 import CompleteRegistration from './components/login/CompleteRegistration';
 import Dashboard from './components/login/Dashboard';
 import Purchase from './components/cart/Purchase';
+import Mock from './components/Mock';
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
             <Route path='/users/login/github' element={<GitHubLogin />} ></Route>
             <Route path='/users/newuser' element={<CompleteRegistration />} ></Route>
             <Route path='/dashboard' element={<Dashboard />} ></Route>
+            <Route path='/mock' element={<Mock />} ></Route>
           </Routes>
     </div>
     </CartContextProvider>

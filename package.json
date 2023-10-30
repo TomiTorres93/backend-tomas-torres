@@ -6,10 +6,12 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@faker-js/faker": "^8.2.0",
     "@mui/material": "^5.14.7",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "artillery": "^2.0.0-38",
     "bcrypt": "^5.1.1",
     "buffer": "^6.0.3",
     "commander": "^11.0.0",
@@ -20,6 +22,7 @@
     "express": "^4.18.2",
     "express-compression": "^1.0.2",
     "express-session": "^1.17.3",
+    "faker-js": "^1.0.0",
     "https-browserify": "^1.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^5.8.1",
@@ -40,7 +43,8 @@
     "stream-http": "^3.2.0",
     "url": "^0.11.1",
     "util": "^0.12.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "winston": "^3.11.0"
   },
   "scripts": {
     "start": "react-scripts start",

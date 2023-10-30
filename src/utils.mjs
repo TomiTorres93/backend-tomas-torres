@@ -2,6 +2,8 @@ import {fileURLToPath} from 'url';
 import { dirname } from 'path';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
+import {fakerES as faker} from '@faker-js/faker';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -52,6 +54,19 @@ export const authToken = (req, res, next) => {
     });
 };
 
-
+//creamos base de productos con Faker
+export const generateProducts = () => {
+    return{
+        _id: faker.database.mongodbObjectId(),
+        title: faker.commerce.productName(),
+        description: faker.commerce.productDescription(),
+        code: faker.string.alpha(5),
+        price: faker.commerce.price(),
+        thumbnail: faker.image.avatar(),
+        stock: faker.number.int(500),
+        available: faker.datatype.boolean(),
+    }
+};
+    
 
 export default __dirname;

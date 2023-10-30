@@ -15,6 +15,12 @@ import cookiesRouter from './routers/cookies.router.mjs';
 import MongoStore from 'connect-mongo';
 import compression from 'express-compression';
 import MongoSingleton from './config/db.mjs';
+import performanceRouter from './routers/performance-test-router.mjs';
+import mockRouter from './routers/mock.router.mjs';
+
+// **BASE
+import { addLogger } from './config/logger_BASE.mjs';
+// import { addLogger } from './config/logger_CUSTOM.mjs';
 
 const app = express();
 const corsOptions = {
@@ -27,6 +33,10 @@ app.all('/*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   next();
 });
+
+// **BASE
+app.use(addLogger);
+
 
 app.use(cookieParser())
 app.use(compression({
@@ -53,6 +63,16 @@ app.use("/api/users", usersRouter);
 app.use("/api/cookies", cookiesRouter);
 app.use("/api/jwt", jwtRouter);
 app.use("/api/ticket", ticketRouter);
+app.use("/api/mockproducts", mockRouter);
+
+app.use("/api/performance", performanceRouter);
+app.get("/api/loggerTest", (req, res) => {
+  // Logica 
+  // req.logger.warn("Prueba de log level warn --> en Endpoint"); // **BASE
+  // req.logger.warning("Prueba de log level warning --> en Endpoint"); // **CUSTOM
+  res.send("Prueba de logger!");
+});
+
 // // MAILING
 // app.use("/api/email", );
 // app.use("/api/sms", );
