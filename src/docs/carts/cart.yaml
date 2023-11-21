@@ -1,0 +1,6 @@
+paths:
+  /api/carts/:
+    get:
+      summary: Obtiene el cart
+      tags:
+       - Carts

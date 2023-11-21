@@ -3,7 +3,6 @@ import {itemModel} from "./models/item.model.mjs";
 
 export default class ItemsService {
     constructor() { 
-        console.log("Working items with Database persistence in mongodb");
     }
 
 

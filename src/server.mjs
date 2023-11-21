@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import itemsRouter from './routers/items.router.mjs';
 import cartRouter from './routers/cart.router.mjs';
 import sessionsRouter from './routers/sessions.router.mjs';
@@ -17,6 +16,23 @@ import compression from 'express-compression';
 import MongoSingleton from './config/db.mjs';
 import performanceRouter from './routers/performance-test-router.mjs';
 import mockRouter from './routers/mock.router.mjs';
+import cluster from 'cluster'
+import {cpus} from 'os'
+import swaggerJsdoc from 'swagger-jsdoc'
+import swaggerUiExpress from 'swagger-ui-express'
+
+// Numero de CPU
+console.log("Cluster primario?", cluster.isPrimary)
+
+if(cluster.isPrimary) {
+  const processors = cpus().length
+  for(let i = 0; i < processors -1; i++) {
+    cluster.fork()
+  }
+} else {
+  console.log("Soy un worker")
+}
+
 
 // **BASE
 import { addLogger } from './config/logger_BASE.mjs';
@@ -29,14 +45,29 @@ const corsOptions = {
     credentials: true, //included credentials as true
 };
 
+
+
 app.all('/*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   next();
 });
 
+const swaggerOptions = {
+  definition: {
+      openapi: "3.0.1",
+      info: {
+          title: "Documentación API Adopme",
+          description: "Documentación para uso de Swagger"
+      }
+  },
+  // aqui van a estar todas las especificaciones tecnicas de mis apis
+  apis: ['./src/docs/**/*.yaml']
+}
+
+const swaggerSpecs = swaggerJsdoc(swaggerOptions);
+
 // **BASE
 app.use(addLogger);
-
 
 app.use(cookieParser())
 app.use(compression({
@@ -56,6 +87,7 @@ app.use(session({
   saveUninitialized: true
 }))
 // Declaración de Routers:
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerSpecs))
 app.use("/api/items", itemsRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/sessions", sessionsRouter);

@@ -2,7 +2,6 @@ import {userModel} from "./models/user.model.mjs";
 
 export default class UsersService {
     constructor() { 
-        console.log("Working items with Database persistence in mongodb");
     }
 
 
