@@ -4,3 +4,27 @@ paths:
       summary: Obtiene el cart
       tags:
        - Carts
+      responses:
+        "200":
+          description: Los carritos fueron obtenidos satisfactoriamente, retorna un array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Cart'
+        "400":
+          description: Se envió un dato no esperado.
+        "500":
+          description: Error interno del servidor. 
+components:
+  schemas:
+    Cart:
+      type: array
+      properties:
+        products:
+          type: array
+          description: Array de productos
+      example:
+          products: [{"Producto1"}, {"Producto2"}]    
+

@@ -4,3 +4,46 @@ paths:
       summary: Obtiene todos los productos
       tags:
        - Items
+      responses:
+        "200":
+          description: Los items fueron obtenidos satisfactoriamente, retorna un array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Item'
+        "400":
+          description: Se envió un dato no esperado.
+        "500":
+          description: Error interno del servidor.
+components:
+  schemas:
+    Item:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre del item.
+        description:
+          type: string
+          description: Descripción del item.
+        category:
+          type: string
+          description: Categoría del item.
+        stock:
+          type: number
+          description: Stock del item.
+        size:
+          type: number
+          description: Medida del item.
+        price:
+          type: number
+          description: Precio del item.      
+      example:
+          name: Pañal pequeño
+          description: Pañal talle pequeño
+          category: pañales
+          stock: 100
+          size: 20
+          price: 5000
