@@ -3,7 +3,7 @@ paths:
     get:
       summary: Obtiene todos los productos
       tags:
-       - Items
+        - Items
       responses:
         "200":
           description: Los items fueron obtenidos satisfactoriamente, retorna un array.
@@ -12,11 +12,170 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#components/schemas/Item'
+                  $ref: '#/components/schemas/Item'
         "400":
           description: Se envió un dato no esperado.
         "500":
           description: Error interno del servidor.
+    post:
+      summary: Crea un nuevo item
+      tags:
+        - Items
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        "201":
+          description: Item creado satisfactoriamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        "500":
+          description: Error interno del servidor.
+
+  /api/items/{id}:
+    get:
+      summary: Obtiene un item por su ID y deduce la cantidad del stock
+      tags:
+        - Items
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del item
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Item obtenido satisfactoriamente y se dedujo la cantidad del stock.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  updatedItem:
+                    $ref: '#/components/schemas/Item'
+        "404":
+          description: Item no encontrado.
+        "500":
+          description: Error interno del servidor.
+    put:
+      summary: Actualiza un item por su ID
+      tags:
+        - Items
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del item
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        "202":
+          description: Item actualizado satisfactoriamente.
+        "500":
+          description: Error interno del servidor.
+    delete:
+      summary: Elimina un item por su ID
+      tags:
+        - Items
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del item
+          schema:
+            type: string
+      responses:
+        "202":
+          description: Item eliminado satisfactoriamente.
+        "500":
+          description: Error interno del servidor.
+
+  /api/items/count:
+    get:
+      summary: Obtiene la cantidad total de items
+      tags:
+        - Items
+      responses:
+        "200":
+          description: Cantidad de items obtenida satisfactoriamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+        "500":
+          description: Error interno del servidor.
+
+  /api/items/match/{parametroId}:
+    get:
+      summary: Obtiene items que coinciden con el parámetro proporcionado
+      tags:
+        - Items
+      parameters:
+        - in: path
+          name: parametroId
+          required: true
+          description: Parámetro para hacer coincidir items
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Items coincidentes obtenidos satisfactoriamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  match:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Item'
+        "500":
+          description: Error interno del servidor.
+
+  /api/items/group/:
+    get:
+      summary: Agrupa items por tamaño
+      tags:
+        - Items
+      responses:
+        "200":
+          description: Items agrupados por tamaño obtenidos satisfactoriamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  group:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: number
+                        totalQty:
+                          type: number
+        "500":
+          description: Error interno del servidor.
+
 components:
   schemas:
     Item:
@@ -31,19 +190,3 @@ components:
         category:
           type: string
           description: Categoría del item.
-        stock:
-          type: number
-          description: Stock del item.
-        size:
-          type: number
-          description: Medida del item.
-        price:
-          type: number
-          description: Precio del item.      
-      example:
-          name: Pañal pequeño
-          description: Pañal talle pequeño
-          category: pañales
-          stock: 100
-          size: 20
-          price: 5000

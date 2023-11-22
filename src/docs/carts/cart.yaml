@@ -1,9 +1,9 @@
 paths:
   /api/carts/:
     get:
-      summary: Obtiene el cart
+      summary: Obtiene todos los carritos
       tags:
-       - Carts
+        - Carts
       responses:
         "200":
           description: Los carritos fueron obtenidos satisfactoriamente, retorna un array.
@@ -12,19 +12,126 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#components/schemas/Cart'
-        "400":
-          description: Se envió un dato no esperado.
+                  $ref: '#/components/schemas/Cart'
         "500":
-          description: Error interno del servidor. 
+          description: Error interno del servidor.
+    post:
+      summary: Crea un nuevo carrito
+      tags:
+        - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        "201":
+          description: Carrito creado satisfactoriamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "500":
+          description: Error interno del servidor.
+
+  /api/carts/{id}:
+    get:
+      summary: Obtiene un carrito por su ID
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Carrito obtenido satisfactoriamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "404":
+          description: Carrito no encontrado.
+        "500":
+          description: Error interno del servidor.
+
+    put:
+      summary: Agrega un producto al carrito
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        "200":
+          description: Producto agregado al carrito satisfactoriamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "500":
+          description: Error interno del servidor.
+
+    delete:
+      summary: Elimina un producto del carrito
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product:
+                  type: string
+              required:
+                - product
+      responses:
+        "200":
+          description: Producto eliminado del carrito satisfactoriamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "500":
+          description: Error interno del servidor.
+
 components:
   schemas:
     Cart:
-      type: array
+      type: object
       properties:
         products:
           type: array
           description: Array de productos
+          items:
+            type: object
+            properties:
+              name:
+                type: string
       example:
-          products: [{"Producto1"}, {"Producto2"}]    
-
+        products: 
+          - name: "Producto1"
+          - name: "Producto2"

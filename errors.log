@@ -257,3 +257,9 @@
 {"level":"warn","message":"GET en /apidocs/swagger-ui-standalone-preset.js - at 22/11/2023 - 17:05:04"}
 {"level":"warn","message":"GET en /apidocs/swagger-ui-init.js - at 22/11/2023 - 17:05:04"}
 {"level":"warn","message":"GET en /apidocs/favicon-32x32.png - at 22/11/2023 - 17:05:04"}
+{"level":"warn","message":"GET en /apidocs/ - at 22/11/2023 - 17:14:48"}
+{"level":"warn","message":"GET en /apidocs/swagger-ui.css - at 22/11/2023 - 17:14:48"}
+{"level":"warn","message":"GET en /apidocs/swagger-ui-standalone-preset.js - at 22/11/2023 - 17:14:48"}
+{"level":"warn","message":"GET en /apidocs/swagger-ui-bundle.js - at 22/11/2023 - 17:14:48"}
+{"level":"warn","message":"GET en /apidocs/swagger-ui-init.js - at 22/11/2023 - 17:14:48"}
+{"level":"warn","message":"GET en /apidocs/favicon-32x32.png - at 22/11/2023 - 17:14:52"}
