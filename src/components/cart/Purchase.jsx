@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import CartList from './CartList';
 import { useParams } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 import { Input, InputLabel } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Purchase() {
 
   const [cartAPIdata, setCartAPIdata] = useState([])
-  
-  const [cartsPaginationData, setCartsPaginationData] = useState([])
-  const [cart, setCart] = useState(null)
-  const [purchased, setPurchased] = useState(false)
+  const [ordenmp, setOrdenmp] = useState([]);
   const [stock, setStock] = useState(false)
+  const [cartsPaginationData, setCartsPaginationData] = useState([])
+
+  const [cart, setCart] = useState(null)
   const [newTicket, setNewTicket] = useState({
     code: uuidv4(),
     purchase_datetime: Date.now(),
@@ -63,56 +62,8 @@ export default function Purchase() {
         ...newTicket,
         amount: total,
       });
-
     }
-  
   }, [cart])
-  const createTicket = async () => {
-
-    try {
-  // Enviar los datos actualizados al servidor
-  await fetch(`http://localhost:3001/api/ticket`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(newTicket),
-  })
-  .then(() => {
-    setPurchased(true)
-  });
-
-    } catch (error) {
-      console.error('Error al obtener datos:', error);
-    }
-  };
-const purchase = async () => {
-    try {
-      const promises = cart.products.map(async (product) => {
-
-        const response = await fetch(`http://localhost:3001/api/items/purchase/${product.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ quantity: product.quantity }),
-        });
-
-        if (!response.ok) {
-            setStock(true)
-          throw new Error(`Error al deducir stock para el producto con ID: ${product.id}`);
-        } else {
-            createTicket()
-        }
-      });
-  
-      await Promise.all(promises);
-
-    } catch (error) {
-      console.error('Error al realizar la compra', error);
-    }
-  };
-  
 
  
 
@@ -132,19 +83,77 @@ const purchase = async () => {
 
   };
 
+  const purchase = async () => {
+    try {
+      const promises = cart.products.map(async (product) => {
+
+        const response = await fetch(`http://localhost:3001/api/items/purchase/${product.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ quantity: product.quantity }),
+        });
+
+        if (!response.ok) {
+            setStock(true)
+          throw new Error(`Error al deducir stock para el producto con ID: ${product.id}`);
+        } else {
+          window.location.href = ordenmp.init_point;
+  
+        }
+      });
+  
+      await Promise.all(promises);
+
+    } catch (error) {
+      console.error('Error al realizar la compra', error);
+    }
+  };
+
+ // MERCADOPAGO
+
+ const data = {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization:
+      `Bearer TEST-c7578c8a-e674-4346-bef9-5b48559be58c`
+  },
+  body: JSON.stringify({
+    items: [
+      {
+        title: "Tomi Torres",
+        description: "Gracias",
+        category_id: "backend",
+        quantity: 1,
+        currency_id: "ARS",
+        unit_price: parseInt(1),
+      }
+    ],
+    auto_return: "approved",
+    back_urls: { success: `https://frontend.com/purchase?purchaser=${newTicket.purchaser}&code=${newTicket.code}&amount=${newTicket.amount}&datetime=${newTicket.purchase_datetime}` },
+  })
+
+};
+
+
+
+useEffect(() => {
+  //getFetch();
+  fetch("https://api.mercadopago.com/checkout/preferences", data)
+    .then(function (resp) {
+      return resp.json();
+    })
+    .then((resp) => setOrdenmp(resp));
+
+}, []);  
+
   return (
     <div className='gap'>
       <h1 className='tittle'>Purchase</h1>
 
-{purchased === true ?
 
-<div>
-    <p>¡Gracias por tu compra!</p>
-    <p>Orden: {newTicket.code} </p>
-    <p>Total: ${newTicket.amount} </p>
-</div>
-
-: 
 
 <>
 <form onSubmit={handleSubmit}> 
@@ -158,11 +167,20 @@ const purchase = async () => {
             required
             />
 </form>
-{newTicket.purchaser ?            <button onClick={purchase}  className='buttonbyn'>Comprar</button> : "Ingresá tu email para finalizar la compra"}
-</>
-}
+{newTicket.purchaser ?            
 
-{stock === true ? "Stock insuficiente" : ""}
+<>
+<button onClick={purchase}  className='buttonbyn'>Comprar</button> 
+
+</>
+
+
+
+: "Ingresá tu email para finalizar la compra"}
+</>
+
+
+
 
     </div>
   )

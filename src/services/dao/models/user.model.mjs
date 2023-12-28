@@ -28,8 +28,33 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'user',
         enum: ['user', 'admin']
-    }
-});
+    },
+    carts:{
+        type:[
+            {
+                cart:{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'carts'
+                },
+            }
+        ],
+        default: [],
+    },
+    documents:{
+        type:[
+            {
+                name: String,
+                reference : String,
+                status : Boolean
+            },
+        ]
+    },
+    
+    last_connection:String,
+    img_profile: String,
+})
+
+
 
 userSchema.plugin(mongoosePaginate)
 

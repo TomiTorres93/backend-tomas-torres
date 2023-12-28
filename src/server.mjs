@@ -6,6 +6,7 @@ import sessionsRouter from './routers/sessions.router.mjs';
 import usersRouter from './routers/users.router.mjs';
 import jwtRouter from './routers/jwt.router.mjs';
 import ticketRouter from './routers/ticket.router.mjs';
+import mailingRouter from './routers/mailing.router.mjs';
 import cookieParser from "cookie-parser";
 import initializePassport from './config/passport.config.mjs';
 import passport from 'passport';
@@ -21,8 +22,6 @@ import {cpus} from 'os'
 import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUiExpress from 'swagger-ui-express'
 
-// Numero de CPU
-console.log("Cluster primario?", cluster.isPrimary)
 
 if(cluster.isPrimary) {
   const processors = cpus().length
@@ -30,7 +29,7 @@ if(cluster.isPrimary) {
     cluster.fork()
   }
 } else {
-  console.log("Soy un worker")
+
 }
 
 
@@ -106,7 +105,7 @@ app.get("/api/loggerTest", (req, res) => {
 });
 
 // // MAILING
-// app.use("/api/email", );
+app.use("/api/email", mailingRouter);
 // app.use("/api/sms", );
 //Middleware passport
 initializePassport();
@@ -118,19 +117,7 @@ const SERVER_PORT = 3001
 app.listen(SERVER_PORT, () => {
   console.log("Servidor escuchando por el puerto: " + SERVER_PORT);
 });
-// Mueve la conexión a MongoDB fuera del servidor
-// const connectMongoDB = async () => {
-//   try {
-//     await mongoose.connect('mongodb+srv://tomitorres93:rodolfowalsh93@cluster0.xhrxoec.mongodb.net/test');
 
-  
-//   } catch (error) {
-//     console.error("No se pudo conectar a la BD usando Moongose: " + error);
-//     process.exit();
-//   }
-// };
-
-// connectMongoDB();
 
 
 const mongoInstance = async () => {

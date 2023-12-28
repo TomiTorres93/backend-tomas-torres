@@ -59,7 +59,106 @@ export default class UsersService {
           }
     }
 
+    updateUser = async (id, user) => {
+      let result = await userModel.updateOne(id, user);
+      if (result){
+          return result;
+      }
+      else{
+          return null
+      }
+  };
+  deleteUser = async (id) => {
+    let result = await userModel.deleteOne(id);
+    if (result){
+        return result;
+    }
+    else{
+        return null
+    }
+};
+
+deleteAllInactive = async () => {
+    const fechaActual = new Date();
+    const users = await userModel.find();
+    const usersInactive = users.filter(user => {
+        const fechaUltimaConexion = new Date(user.last_connection);
+        const diff = fechaActual - fechaUltimaConexion;
+        const minutos = Math.floor(diff / (1000 * 60));
+        return minutos > 2880;
+    })
+    // Recorre el array de usuarios inactivos
+    for (const user of usersInactive) {
+        const mailOptions = {
+        from: envConfig.gmailUser,
+        to: user.email,
+        subject: `Hola ${user.first_name}, tu cuenta ha sido eliminada`,
+        text: `Su cuenta ha sido eliminada por inactividad. Por politicas de la empresa si la cuenta esta más de 48 hs sin movimientos se elimina de forma automatica.
+        
+        Esperamos verte pronto.
+        Saludos`,
+        };
+        transporter.sendMail(mailOptions,(error, info)=>{
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.messageId);
+            }
+        });
+    };
+    const result =  await userModel.deleteMany({_id: {$in: usersInactive.map(user => user._id)}});
+    if (result){
+        return result;
+    }
+    else{
+        return null
+    }
+};
+
+uploadAvatar = async (email, path) => {
+    let userUpdate = await userModel.updateOne({email: email}, {img_profile: path})
+    if (userUpdate){
+        return userUpdate;
+    }
+    else{
+        return null
+    }
+};
 
 
+uploadDoc = async (email, path, docName) => {
+    const exists = await userModel.findOne({ email });
+    const docs = exists.documents;
+    const duExists = docs.some(doc => doc.name === docName);
+    const names = ["DU", "EC", "CD"];        
+
+    async function premium () {
+        const exists = await userModel.findOne({ email: email });
+        const docs = exists.documents;
+        return docs.filter((objeto) => {
+            return names.includes(objeto.name);
+        }).length === 3;
+        };
+
+    if (duExists) {
+        let delDoc = await userModel.updateOne({ email: email },
+            { $pull: { documents: { name: docName } } });
+        let user = await userModel.updateOne({ email: email },
+            { $push: { documents: { name: docName, reference: path, status: true } } })
+
+        return user
+    }else{
+        let user = await userModel.updateOne({ email: email     },
+        { $push: { documents: { name: docName, reference: path, status: true } } })
+        if (user) {
+            const isPremium = await premium();
+            if (isPremium) {
+                await userModel.updateOne({ email },
+                    { $set: { role: "premium" } });
+            }
+        }
+        return user
+    };
+};
 
 }

@@ -4,42 +4,17 @@ import UsersService from "../services/dao/users.services.mjs";
 const UserService = new UsersService();
 const router = Router();
 
-// // Lectura
+//Controller para obtener todos los usuarios
+export const getAllUsersController = async (req, res) => {
+  const data = await UserService.getAll();
+  res.send(data);
+};
 
-
-// router.get('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
-  
-//   try {
-//     res.send({user: req.user})
-//     console.log(req.user)
-//   } catch (error) {
-//       console.error(error);
-//       res.status(500).send({ error: error, message: "No se pudo obtener el usuario." });
-//   }
-// });
-
-
-// router.get('/', async (req, res) => {
-//     const query = req.query;
-
-//     try {
-//         const options = {
-//             page: parseInt(query.page) || 1,
-//             limit: parseInt(query.limit) || 10,
-//         }
-//         const users = await UserService.getAll(
-//             {
-//                 query, 
-//                 options: options
-//             }
-//         )
-
-//         res.send({ status: 'success', payload: users.docs, pagination: users.pagination });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send({ error: error, message: "No se pudo obtener el usuario." });
-//     }
-// });
+//Controller para obtener todos los usuarios inactivos
+export const delAllInactiveUsersController = async (req, res) => {
+  const data = await UserService.deleteAllInactive();
+  res.send(data);
+}
 
 
 export const authJWTcontroller = async (req, res) => {
@@ -88,7 +63,126 @@ export const createUsercontroller   = async (req, res) => {
     }
 }
 
+//Controller para eliminar un usuario por id
+export const deleteUserController = async (req, res) => {
+  const uid = req.params.uid;
+  try {
+      const user = await UserService.deleteUser({_id:uid})
+      if (user) {
+          req.logger.info("Usuario eliminado con exito")
+          return res.send({status: "200", message: "Usuario eliminado con exito", payload: user});
+      }else{
+          req.logger.error("Error al buscar el usuario")
+          return res.status(401).send({ message: "Usuario no valido" });
+      }
+  } catch (error) {
+      res.status(500).json({ error: 'Error interno del servidor', details: error.message });  
+      
+  }
+}
 
+
+//controller para actualizar un usuario
+export const updateUserController = async (req, res) => {
+  const uid = req.params.uid;
+  try {
+      const {first_name, last_name, email, age, role, last_connection, documents} = req.body;
+      const data = {
+          first_name,
+          last_name,
+          email,
+          age,
+          role,
+          last_connection,
+          documents
+      }
+      const user = await UserService.updateUser({_id: uid}, data);
+      if (user) {
+          req.logger.info("Usuario actualizado con éxito")
+          return res.send({status: "200", message: "Usuario actualizado con éxito", payload: user});
+      }else{
+          req.logger.error("Error al actualizar el usuario")
+          return res.status(401).send({ message: "Usuario no válido" });
+      }
+
+  } catch (error) {
+      res.status(500).json({ error: 'Error del servidor', details: error.message });
+  }
+  
+
+}
+
+
+//controller subir img de perfil
+export const imgProfileController = async (req, res) => {
+  try {
+      let email = req.params.user;
+  let path = "../profile/"+(req.file.filename)
+  const user = await UserService.uploadAvatar(email, path);
+  if (user) {
+      req.logger.info("Imagen de perfil subida con exito")
+      return res.status(200).send({ message: "Imagen de perfil subida con exito" }); 
+      
+  }else{
+      req.logger.error("Error al subir la imagen de perfil")
+  }  
+  }catch (error) {
+      res.status(500).json({ error: 'Error interno del servidor', details: error.message });
+  }
+};
+
+//controller subir documentos (DU)
+export const userDUController = async (req, res) => {
+  try {
+      let email = req.params.user;
+      let path = "../documents/"+(req.file.filename)
+      const user = await UserService.uploadDoc(email, path, "DU");
+      if (user) {
+          req.logger.info("Documento subido con exito")
+          return res.status(200).send({ message: "Documento subido con exito" }); 
+      }else{
+          req.logger.error("Error al subir el documento")
+      }
+  } catch (error) {
+      res.status(500).json({ error: 'Error interno del servidor', details: error.message });
+  }
+
+
+
+};
+
+//controller subir documentos (CD)
+export const userCDController = async (req, res) => {
+  try {
+      let email = req.params.user;
+  let path = "../documents/"+(req.file.filename)
+  const user = await UserService.uploadDoc(email,path, "CD");
+  if (user) {
+      req.logger.info("Documento subido con exito")
+      return res.status(200).send({ message: "Documento subido con exito" }); 
+  }else{
+      req.logger.error("Error al subir el documento")
+  };
+  } catch (error) {
+      res.status(500).json({ error: 'Error interno del servidor', details: error.message });
+  }
+};
+//controller subir documentos (EC)
+export const userECController = async (req, res) => {
+  try {
+      let email = req.params.user;
+      let path = "../documents/"+(req.file.filename)
+      const user = await UserService.uploadDoc(email,path,"EC");
+      if (user) {
+          req.logger.info("Documento subido con exito")
+          return res.status(200).send({ message: "Documento subido con exito" }); 
+      }else{
+          req.logger.error("Error al subir el documento")
+      };    
+  } catch (error) {
+      res.status(500).json({ error: 'Error interno del servidor', details: error.message });
+  }
+}
 
 
 export default router;

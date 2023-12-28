@@ -41,7 +41,6 @@ export const getItemsByIdController =  async (req, res) => {
         const itemId = req.params.id;
         const body = req.body.quantity;
         const item = await itemService.getItemByIdAndDeduce(itemId, body);
-        console.log(item)
         if (item.success === false) {
             return res.status(404).send({ error: 'item no encontrado' });
         }

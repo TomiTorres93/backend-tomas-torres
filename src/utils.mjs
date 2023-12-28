@@ -3,6 +3,7 @@ import { dirname } from 'path';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
 import {fakerES as faker} from '@faker-js/faker';
+import multer from 'multer'
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -67,6 +68,38 @@ export const generateProducts = () => {
         available: faker.datatype.boolean(),
     }
 };
+
+//Configuracion de Multer para subir archivos
+function createMulterMiddleware(destination) {
+    return multer({
+      storage: multer.diskStorage({
+        destination: function (req, file, cb) {
+          cb(null, destination);
+        },
+        filename: function (req, file, cb) {
+          const email = req.params.user;
+          const baseName = file.originalname.slice(file.originalname.length - 4);
+          if (destination === `${__dirname}/public/profile` ){
+            cb(null, `avatar_${email}_${baseName}`);
+          }else if (destination === `${__dirname}/public/products`){
+            cb(null, `prodImg_${email}_${baseName}`);
+          }else{
+            cb(null, file.fieldname +`_${email}_${baseName}`);
+          
+          }
+          
+        },
+      }),
+      onError: function (err, next) {
+        console.log(err);
+        next();
+      },
+    });
+  }
+  
+  export const upProfileImg = createMulterMiddleware(`${__dirname}/public/profile`);
+  export const upProdImg = createMulterMiddleware(`${__dirname}/public/products`);
+  export const upUserDocs = createMulterMiddleware(`${__dirname}/public/documents`);
     
 
 export default __dirname;

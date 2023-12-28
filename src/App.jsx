@@ -31,7 +31,7 @@ function App() {
     <CartContextProvider>
     <div className="App">
           <Routes>
-            <Route path='/products' element={<ShopListCont />} ></Route>
+            <Route path='/' element={<ShopListCont />} ></Route>
             <Route path='/carts' element={<CartListCont />} ></Route>
             <Route path='/carts/:id' element={<CartListCont />} ></Route>
             <Route path='/carts/:id/purchase' element={<Purchase />} ></Route>

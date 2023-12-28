@@ -23,5 +23,8 @@ router.get('/githubcallback', passport.authenticate('github', { scope: 'user:ema
 
 router.post('/githubcallback', passport.authenticate('github', { failureRedirect: '/api/sessions/fail-login' }), githubLoginPostController);
 
+//Obtenemos todos los usuarios inactivos de la base de datos MongoDB
+// router.delete('/inactiveUsers', delAllInactiveUsersController )
+
 
 export default router;
