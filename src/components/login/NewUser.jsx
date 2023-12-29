@@ -27,7 +27,7 @@ export default function NewUser() {
       const getDataFromDB = async () => {
         try {
     
-          const response = await fetch(`http://localhost:3001/api/sessions`);
+          const response = await fetch(`https://backend-tomitorres.onrender.com/api/sessions`);
           const data = await response.json();
     
           setUsers(data.payload);
@@ -45,7 +45,7 @@ export default function NewUser() {
 
       const getCookies = async () => {
         try {
-          const res = await fetch('http://localhost:3001/api/cookies/getCookies');
+          const res = await fetch('https://backend-tomitorres.onrender.com/api/cookies/getCookies');
           if (res.status === 200) {
             // Verifica si la respuesta contiene las cookies
             const cookies = await res.json();
@@ -61,7 +61,7 @@ export default function NewUser() {
       
       const createNewUser = async () => {
         try {
-          const response = await fetch('http://localhost:3001/api/sessions/register', {
+          const response = await fetch('https://backend-tomitorres.onrender.com/api/sessions/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ export default function NewUser() {
       
             if (response.status === 201) {
               try {
-                const res = await fetch(`http://localhost:3001/api/cookies/setCookie?value=${newUser.email}`)
+                const res = await fetch(`https://backend-tomitorres.onrender.com/api/cookies/setCookie?value=${newUser.email}`)
                 console.log(res)
                 console.log("cookie existosa!");
 

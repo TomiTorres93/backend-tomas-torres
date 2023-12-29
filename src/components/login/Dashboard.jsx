@@ -8,7 +8,7 @@ export default function Dashboard() {
     const userDataById = async (req, res) => {
 
         try {
-              const response = await fetch(`http://localhost:3001/api/users/`, {
+              const response = await fetch(`https://backend-tomitorres.onrender.com/api/users/`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json'

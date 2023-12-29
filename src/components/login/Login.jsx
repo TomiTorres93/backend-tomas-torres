@@ -23,7 +23,7 @@ const [userData, setUserData] = useState(undefined)
   const jwt = async () => {
 
     try {
-      const response = await fetch('http://localhost:3001/api/jwt/login', {
+      const response = await fetch('https://backend-tomitorres.onrender.com/api/jwt/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const [userData, setUserData] = useState(undefined)
         jwt()
       }} className='buttonbyn' type="submit">Iniciar Sesión</button>
 
-      <a href="http://localhost:3001/api/sessions/github" className='buttonbyn'>Login con GitHub </a> <img className='gitLogo' width="20" height="20" src="https://img.icons8.com/ios-glyphs/30/github.png" alt="github"/>
+      <a href="https://backend-tomitorres.onrender.com/api/sessions/github" className='buttonbyn'>Login con GitHub </a> <img className='gitLogo' width="20" height="20" src="https://img.icons8.com/ios-glyphs/30/github.png" alt="github"/>
       </div>
   </div>
   )

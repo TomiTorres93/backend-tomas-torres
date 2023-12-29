@@ -4,7 +4,7 @@ import supertest from 'supertest'
 const expect = chai.expect
 
 
-const requester = supertest('http://localhost:3001')
+const requester = supertest('https://backend-tomitorres.onrender.com')
 
 //contexto globla
 

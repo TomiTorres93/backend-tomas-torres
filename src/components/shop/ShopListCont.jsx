@@ -24,8 +24,8 @@ export default function ShopListCont() {
 
   const getDataFromDB = async (url) => {
     try {
-
-      const response = await fetch(url === undefined ? `http://localhost:3001/api/items${searchParams}` : url);
+      console.log(url)
+      const response = await fetch(url === undefined ? `https://backend-tomitorres.onrender.com/api/items${searchParams}` : url);
       const data = await response.json();
       console.log(data)
       setItems(data.payload);
@@ -39,7 +39,7 @@ export default function ShopListCont() {
   const getCookies = async () => {
     try {
 
-      const response = await fetch(`http://localhost:3001/api/cookies/getCookies`);
+      const response = await fetch(`https://backend-tomitorres.onrender.com/api/cookies/getCookies`);
 
       if (response.ok) {
         const cookiesData = await response.json();
@@ -70,7 +70,7 @@ export default function ShopListCont() {
   const [cartsPaginationData, setCartsPaginationData] = useState([])
   const cartAPIget = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/api/carts`);
+      const response = await fetch(`https://backend-tomitorres.onrender.com/api/carts`);
       const data = await response.json();
       setCartAPIdata(data.payload)
 
@@ -88,7 +88,7 @@ export default function ShopListCont() {
 
   const createNewItem = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/items', {
+      const response = await fetch('https://backend-tomitorres.onrender.com/api/items', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ export default function ShopListCont() {
     // Función para crear un carrito nuevo
     const createCart = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/carts', {
+        const response = await fetch('https://backend-tomitorres.onrender.com/api/carts', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ export default function ShopListCont() {
           setCart(updatedCart);
 
           // Enviar los datos actualizados al servidor
-          await fetch(`http://localhost:3001/api/carts/${idString}`, {
+          await fetch(`https://backend-tomitorres.onrender.com/api/carts/${idString}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -256,63 +256,9 @@ export default function ShopListCont() {
 
       
 
-      {/* <button onClick={getDataFromDB}>Obtener Datos</button>  */}
+      <button onClick={getDataFromDB}>Obtener Datos</button>  
 
-      {/* <h2>Nuevo Item</h2>
-      <div className='column'>
-      <label htmlFor="name">Nombre</label>
-      <input
-        type="text"
-        placeholder="Nombre"
-        value={newItem.name}
-        onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
-      />
-       <label htmlFor="description">Descripción</label>
-
-      <input
-        type="text"
-        placeholder="Descripción"
-        value={newItem.description}
-        onChange={(e) => setNewItem({ ...newItem, description: e.target.value })}
-      />
-
-
-<label htmlFor="description">Categoria</label>
-
-<input
-  type="text"
-  placeholder="Categoria"
-  value={newItem.category}
-  onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
-/>
-<label htmlFor="stock">Stock</label>
-      <input
-        type="number"
-        placeholder="Stock"
-        value={newItem.stock}
-        onChange={(e) => setNewItem({ ...newItem, stock: parseInt(e.target.value) })}
-      />
-
-<label htmlFor="size">Tamaño</label>
-      <input
-        type="number"
-        placeholder="Tamaño"
-        value={newItem.size}
-        onChange={(e) => setNewItem({ ...newItem, size: parseInt(e.target.value) })}
-      />
-
-<label htmlFor="size">Precio</label>
-      <input
-        type="number"
-        placeholder="Precio"
-        value={newItem.price}
-        onChange={(e) => setNewItem({ ...newItem, price: parseInt(e.target.value) })}
-      />
-      <button onClick={createNewItem}>Crear Item</button> 
-      </div>
-       */}
-
-      {/* <button onClick={cartAPIget}>GET CART API</button> */}
+   
 
       <div className='column'>
         <div className='row'>

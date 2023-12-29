@@ -21,7 +21,7 @@ export default function CartListCont() {
   const { id } = useParams()
   const cartAPIget = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/api/carts`);
+      const response = await fetch(`https://backend-tomitorres.onrender.com/api/carts`);
       const data = await response.json();
       setCartAPIdata(data.payload)
       setCartsPaginationData(data.pagination)
@@ -38,7 +38,7 @@ export default function CartListCont() {
   
   const cartById = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/api/carts/${id}`);
+      const response = await fetch(`https://backend-tomitorres.onrender.com/api/carts/${id}`);
       const data = await response.json();
       setCart(data)
 
@@ -70,7 +70,7 @@ export default function CartListCont() {
   const deleteItem = async (product) => {
     try {
   // Enviar los datos actualizados al servidor
-  await fetch(`http://localhost:3001/api/carts/${id}`, {
+  await fetch(`https://backend-tomitorres.onrender.com/api/carts/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

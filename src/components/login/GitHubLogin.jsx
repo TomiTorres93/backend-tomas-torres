@@ -6,7 +6,7 @@ export default function GitHubLogin() {
 
     const GitHubLog = async () => {
         try {
-            const response = await fetch('http://localhost:3001/api/sessions/github')
+            const response = await fetch('https://backend-tomitorres.onrender.com/api/sessions/github')
              console.log(response)
               if (response.status === 200) {
              
@@ -26,7 +26,7 @@ export default function GitHubLogin() {
 
   return (
     <div>
-<a href="http://localhost:3001/api/sessions/github">Iniciar sesión con GitHub</a>
+<a href="https://backend-tomitorres.onrender.com/sessions/github">Iniciar sesión con GitHub</a>
 
 <button onClick={GitHubLog}> GITHUB</button>
     </div>

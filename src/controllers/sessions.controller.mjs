@@ -57,7 +57,7 @@ export const loginController = async (req, res) => {
 }
 
 export const githubLoginGetController = async (req, res) => {
-    res.redirect('https://github.com/login/oauth/authorize?client_id=Iv1.ad8241c45238ff04&redirect_uri=http://localhost:3001/api/sessions/githubcallback&scope=user:email');
+    res.redirect('https://github.com/login/oauth/authorize?client_id=Iv1.ad8241c45238ff04&redirect_uri=https://backend-tomitorres.onrender.com/api/sessions/githubcallback&scope=user:email');
 }
 
 
@@ -71,9 +71,9 @@ export const githubCallbackController = async (req, res) => {
  
     req.session.admin = true
     if(!user.password) {
-      res.redirect(`http://localhost:3002/users/newuser?${user.email}`)
+      res.redirect(`https://backend-tomitorres.onrender.com/users/newuser?${user.email}`)
     } else {
-      res.redirect('http://localhost:3002/dashboard')
+      res.redirect('https://backend-tomitorres.onrender.com/dashboard')
     }
  }
 

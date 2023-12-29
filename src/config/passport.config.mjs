@@ -101,7 +101,7 @@ async (req, username, password, done) => {
 passport.use('github', new GitHubStrategy({
     clientID: 'Iv1.ad8241c45238ff04',
     clientSecret: 'a6f528128eb2776017bf090ea478cf765dcf9162',
-    callbackURL: 'http://localhost:3001/api/sessions/githubcallback'
+    callbackURL: 'https://backend-tomitorres.onrender.com/api/sessions/githubcallback'
 },
 
 async (accessToken, refreshToken, profile, done) => {
