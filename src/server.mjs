@@ -39,9 +39,9 @@ import { addLogger } from './config/logger_BASE.mjs';
 
 const app = express();
 const corsOptions = {
-  origin: ['backend-tomitorres.netlify.app, http://localhost:3002', 'http://localhost:3001', 'http://localhost:3000'],
-  methods: 'GET,POST,PUT,DELETE', 
-    credentials: true, //included credentials as true
+  origin: ['https://backend-tomitorres.netlify.app', 'https://backend-tomitorres.onrender.com', 'http://localhost:3002', 'http://localhost:3001', 'http://localhost:3000'],
+  methods: 'GET,POST,PUT,DELETE',
+  credentials: true,
 };
 
 

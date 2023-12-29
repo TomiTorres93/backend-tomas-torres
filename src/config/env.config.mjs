@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import program from '../process.mjs';
 
 const enviroment = program.opts().mode
+
 console.log("Modo Opt: ", program.opts().mode);
 
 dotenv.config({

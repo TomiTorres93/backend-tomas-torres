@@ -24,10 +24,9 @@ export default function ShopListCont() {
 
   const getDataFromDB = async (url) => {
     try {
-      console.log(url)
-      const response = await fetch(url === undefined ? `https://backend-tomitorres.onrender.com/api/items${searchParams}` : url);
+      const response = await fetch(url === undefined ? `https://backend-tomitorres.onrender.com/api/items${JSON.stringify(searchParams)}` : url);
       const data = await response.json();
-      console.log(data)
+      console.log(response)
       setItems(data.payload);
       setPaginationData(data.pagination)
     } catch (error) {
