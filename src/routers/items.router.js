@@ -1,6 +1,6 @@
 import { Router } from "express";
-import ItemsService from "../services/dao/items.services.mjs";
-import { getItemsController, countController, getItemsByIdController, matchController, groupController, createController, putController, deleteController} from "../controllers/items.controller.mjs";
+import ItemsService from "../services/dao/items.services.js";
+import { getItemsController, countController, getItemsByIdController, matchController, groupController, createController, putController, deleteController} from "../controllers/items.controller.js";
 
 
 const itemService = new ItemsService();

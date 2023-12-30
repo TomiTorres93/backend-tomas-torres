@@ -1,8 +1,8 @@
 import { Router } from "express";
-import UsersService from "../services/dao/users.services.mjs";
-import {authToken, upProdImg, upProfileImg, upUserDocs} from "../utils.mjs"
+import UsersService from "../services/dao/users.services.js";
+import {authToken, upProdImg, upProfileImg, upUserDocs} from "../utils.js"
 import passport from "passport";
-import {authJWTcontroller, userByEmailcontroller, getAllUsersController, createUsercontroller,updateUserController, deleteUserController, userDUController, userECController, userCDController} from "../controllers/user.controller.mjs";
+import {authJWTcontroller, userByEmailcontroller, getAllUsersController, createUsercontroller,updateUserController, deleteUserController, userDUController, userECController, userCDController} from "../controllers/user.controller.js";
 
 const UserService = new UsersService();
 const router = Router();

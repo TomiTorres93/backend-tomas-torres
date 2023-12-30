@@ -7,7 +7,7 @@ export default function Mock() {
   
     const cartAPIget = async () => {
       try {
-        const response = await fetch(`https://backend-tomitorres.onrender.com/api/mockproducts`);
+        const response = await fetch(`https://backend-newapi-production.up.railway.app/api/mockproducts`);
         const data = await response.json();
         setData(data.payload)
   
@@ -22,7 +22,6 @@ export default function Mock() {
   
     }, []);
 
-    console.log(data)
   
   return (
     <div className='row'>

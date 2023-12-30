@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { loginController } from "../controllers/jwt.controller.mjs";
+import { loginController } from "../controllers/jwt.controller.js";
 
 
 const router = Router();

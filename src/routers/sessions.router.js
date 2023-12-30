@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import cookieParser from "cookie-parser";
 import passport from 'passport';
-import { passwordController, setCookieController, newUserController, modifyController, loginController, githubLoginGetController, githubCallbackController, githubLoginPostController } from "../controllers/sessions.controller.mjs";
+import { passwordController, setCookieController, newUserController, modifyController, loginController, githubLoginGetController, githubCallbackController, githubLoginPostController } from "../controllers/sessions.controller.js";
 
 const router = Router();
 

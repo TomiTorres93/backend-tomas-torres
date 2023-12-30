@@ -24,9 +24,12 @@ export default function ShopListCont() {
 
   const getDataFromDB = async (url) => {
     try {
-      const response = await fetch(url === undefined ? `https://backend-tomitorres.onrender.com/api/items${JSON.stringify(searchParams)}` : url);
+      const response = await fetch(`https://backend-newapi-production.up.railway.app/api/items${searchParams}`, {
+        method: 'GET',
+        credentials: 'include',
+      });
       const data = await response.json();
-      console.log(response)
+  
       setItems(data.payload);
       setPaginationData(data.pagination)
     } catch (error) {
@@ -38,7 +41,7 @@ export default function ShopListCont() {
   const getCookies = async () => {
     try {
 
-      const response = await fetch(`https://backend-tomitorres.onrender.com/api/cookies/getCookies`);
+      const response = await fetch(`https://backend-newapi-production.up.railway.app/api/cookies/getCookies`);
 
       if (response.ok) {
         const cookiesData = await response.json();
@@ -69,7 +72,7 @@ export default function ShopListCont() {
   const [cartsPaginationData, setCartsPaginationData] = useState([])
   const cartAPIget = async () => {
     try {
-      const response = await fetch(`https://backend-tomitorres.onrender.com/api/carts`);
+      const response = await fetch(`https://backend-newapi-production.up.railway.app/api/carts`);
       const data = await response.json();
       setCartAPIdata(data.payload)
 
@@ -87,7 +90,7 @@ export default function ShopListCont() {
 
   const createNewItem = async () => {
     try {
-      const response = await fetch('https://backend-tomitorres.onrender.com/api/items', {
+      const response = await fetch('https://backend-newapi-production.up.railway.app/api/items', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -113,7 +116,7 @@ export default function ShopListCont() {
     // Función para crear un carrito nuevo
     const createCart = async () => {
       try {
-        const response = await fetch('https://backend-tomitorres.onrender.com/api/carts', {
+        const response = await fetch('https://backend-newapi-production.up.railway.app/api/carts', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -156,7 +159,7 @@ export default function ShopListCont() {
           setCart(updatedCart);
 
           // Enviar los datos actualizados al servidor
-          await fetch(`https://backend-tomitorres.onrender.com/api/carts/${idString}`, {
+          await fetch(`https://backend-newapi-production.up.railway.app/api/carts/${idString}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -253,11 +256,7 @@ export default function ShopListCont() {
 
       <h1 className='tittle'>PRODUCTOS</h1>
 
-      
-
-      <button onClick={getDataFromDB}>Obtener Datos</button>  
-
-   
+       
 
       <div className='column'>
         <div className='row'>

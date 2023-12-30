@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { userModel } from '../services/dao/models/user.model.mjs';
-import { generateJWToken, isValidPassword } from '../utils.mjs';
+import { userModel } from '../services/dao/models/user.model.js';
+import { generateJWToken, isValidPassword } from '../utils.js';
 import cookieParser from "cookie-parser";
 
 const router = Router();

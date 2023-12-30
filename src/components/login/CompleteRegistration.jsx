@@ -29,7 +29,7 @@ export default function CompleteRegistration( { } ) {
       const getUserDataFromDB = async () => {
         try {
     
-          const response = await fetch(`https://backend-tomitorres.onrender.com/api/users/userExists/${window.location.search.substring(1)}`);
+          const response = await fetch(`https://backend-newapi-production.up.railway.app/api/users/userExists/${window.location.search.substring(1)}`);
           const data = await response.json();
     
           setUser(data.match)
@@ -51,7 +51,7 @@ export default function CompleteRegistration( { } ) {
       
       const createNewUser = async () => {
         try {
-          const response = await fetch('https://backend-tomitorres.onrender.com/api/sessions/register', {
+          const response = await fetch('https://backend-newapi-production.up.railway.app/api/sessions/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ItemsService from "../services/dao/items.services.mjs";
+import ItemsService from "../services/dao/items.services.js";
 
 
 const itemService = new ItemsService();

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ticketService from "../services/dao/ticket.services.mjs";
+import ticketService from "../services/dao/ticket.services.js";
 import nodemailer from 'nodemailer'
 
 const TicketService = new ticketService();
@@ -76,7 +76,7 @@ export const getTicketByIdController = async (req, res) => {
 export const createTicketController = async (req, res) => {
     try {
         const { code, purchase_datetime, amount, purchaser } = req.body;
-        const ticket = await TicketService.createTicket({ code, purchase_datetime, amount, purchaser });
+        const ticket = await TicketService.createTicket({ code, purchase_datetime, amount});
         // Envía el correo electrónico al purchaser del nuevo ticket
         const emailResponse = await sendEmailController({
             body: {
@@ -95,15 +95,19 @@ export const createTicketController = async (req, res) => {
 export const webhookMPController = async (req, res) => {
     try {
         const evento = req.body;
+        const decodedPurchaser = decodeURIComponent(req.query.purchaser);
+
         const newTicket = {
-            purchaser: req.query.purchaser,
+            purchaser: decodedPurchaser,
             code: req.query.code,
             amount: req.query.amount,
-            purchase_datetime: req.query.purchase_datetime, // Corregir la propiedad duplicada
-        };
+            purchase_datetime: req.query.datetime, // Corregir la propiedad duplicada
+          };
+          
+          console.log(newTicket)
 
         switch (evento.type) {
-            case 'payment':
+            case 'payment' || 'test.created':
                 await createTicketController({ body: newTicket }, res); // Pasar req y res correctamente
                 break;
             case 'something_else':

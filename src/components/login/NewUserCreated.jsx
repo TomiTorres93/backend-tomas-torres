@@ -6,7 +6,7 @@ export default function NewUserCreated() {
 
   const getUserData = async () => {
     try {
-      const response = await fetch('https://backend-tomitorres.onrender.com/getUserData', {
+      const response = await fetch('https://backend-newapi-production.up.railway.app/getUserData', {
         credentials: 'include', // Esto permite que las cookies se envíen con la solicitud
       });
   

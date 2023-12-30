@@ -1,7 +1,7 @@
 import passport from 'passport';
 import passportLocal from 'passport-local';
-import { userModel } from '../services/dao/models/user.model.mjs';
-import { createHash, isValidPassword, PRIVATE_KEY } from '../utils.mjs';
+import { userModel } from '../services/dao/models/user.model.js';
+import { createHash, isValidPassword, PRIVATE_KEY } from '../utils.js';
 import  GitHubStrategy from 'passport-github2'
 import jwtStrategy from 'passport-jwt'
 
@@ -101,7 +101,7 @@ async (req, username, password, done) => {
 passport.use('github', new GitHubStrategy({
     clientID: 'Iv1.ad8241c45238ff04',
     clientSecret: 'a6f528128eb2776017bf090ea478cf765dcf9162',
-    callbackURL: 'https://backend-newapi-production.up.railway.app/api/sessions/githubcallback'
+    callbackURL: 'https://backend-tomitorres.onrender.com/api/sessions/githubcallback'
 },
 
 async (accessToken, refreshToken, profile, done) => {

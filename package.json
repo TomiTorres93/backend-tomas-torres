@@ -2,9 +2,9 @@
   "name": "backendproyectofinal",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://backend-tomitorres.onrender.com",
+  "proxy": "https://backend-newapi-production.up.railway.app",
   "dependencies": {
-    "@emotion/react": "^11.11.1",
+    "@enption/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@faker-js/faker": "^8.2.0",
     "@mui/material": "^5.14.7",

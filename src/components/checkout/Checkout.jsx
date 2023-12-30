@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
 export default function Checkout() {
+
+  const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
+
 
     const purchaser = urlParams.get('purchaser')
 

@@ -18,11 +18,12 @@ export default function Purchase() {
     purchaser: '',
   });
 
+  const [purchaser, setPurchaser] = useState("")
 
   const { id } = useParams()
   const cartAPIget = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/api/carts`);
+      const response = await fetch(`https://backend-newapi-production.up.railway.app/api/carts`);
       const data = await response.json();
       setCartAPIdata(data.payload)
       setCartsPaginationData(data.pagination)
@@ -39,7 +40,7 @@ export default function Purchase() {
   
   const cartById = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/api/carts/${id}`);
+      const response = await fetch(`https://backend-newapi-production.up.railway.app/api/carts/${id}`);
       const data = await response.json();
       setCart(data)
 
@@ -51,19 +52,6 @@ export default function Purchase() {
   useEffect(() => {
     cartById();
   }, []);
-
-  useEffect(() => {
-    if(cart) {
-      let total = cart.products.reduce((accumulator, item) => {
-        const productValue = item.price * item.quantity;
-        return accumulator + productValue;
-      }, 0) 
-      setNewTicket({
-        ...newTicket,
-        amount: total,
-      });
-    }
-  }, [cart])
 
  
 
@@ -83,42 +71,18 @@ export default function Purchase() {
 
   };
 
-  const purchase = async () => {
-    try {
-      const promises = cart.products.map(async (product) => {
 
-        const response = await fetch(`http://localhost:3001/api/items/purchase/${product.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ quantity: product.quantity }),
-        });
-
-        if (!response.ok) {
-            setStock(true)
-          throw new Error(`Error al deducir stock para el producto con ID: ${product.id}`);
-        } else {
-          window.location.href = ordenmp.init_point;
-  
-        }
-      });
-  
-      await Promise.all(promises);
-
-    } catch (error) {
-      console.error('Error al realizar la compra', error);
-    }
-  };
 
  // MERCADOPAGO
+
+ let backUrl = `https://backend-tomitorres.netlify.app/checkout?purchaser=${encodeURIComponent(newTicket.purchaser)}&code=${newTicket.code}&amount=100&datetime=${newTicket.purchase_datetime}`
 
  const data = {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
     Authorization:
-      `Bearer TEST-c7578c8a-e674-4346-bef9-5b48559be58c`
+      `Bearer APP_USR-8404686005993449-122720-be07e7d66d5d1cb1e20e3a36e0ee2227-169291933`
   },
   body: JSON.stringify({
     items: [
@@ -131,14 +95,15 @@ export default function Purchase() {
         unit_price: parseInt(1),
       }
     ],
+    notification_url:  `https://backend-newapi-production.up.railway.app/api/ticket/webhook?purchaser=${encodeURIComponent(newTicket.purchaser)}&code=${newTicket.code}&amount=100&datetime=${newTicket.purchase_datetime}`,
     auto_return: "approved",
-    back_urls: { success: `https://frontend.com/purchase?purchaser=${newTicket.purchaser}&code=${newTicket.code}&amount=${newTicket.amount}&datetime=${newTicket.purchase_datetime}` },
+    back_urls: { success: backUrl }
   })
 
 };
 
 
-
+console.log(encodeURIComponent(newTicket.purchaser))
 useEffect(() => {
   //getFetch();
   fetch("https://api.mercadopago.com/checkout/preferences", data)
@@ -148,6 +113,39 @@ useEffect(() => {
     .then((resp) => setOrdenmp(resp));
 
 }, []);  
+
+const purchase = async () => {
+  try {
+    const promises = cart.products.map(async (product) => {
+
+      const response = await fetch(`https://backend-newapi-production.up.railway.app/api/items/purchase/${product.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ quantity: product.quantity }),
+      });
+
+      if (!response.ok) {
+          setStock(true)
+        throw new Error(`Error al deducir stock para el producto con ID: ${product.id}`);
+      } else {
+        window.location.href = ordenmp.init_point;
+
+      }
+    });
+
+    await Promise.all(promises);
+
+  } catch (error) {
+    console.error('Error al realizar la compra', error);
+  }
+};
+
+
+const handleInputChange2 = (event) => {
+  setPurchaser(event.target.value);
+};
 
   return (
     <div className='gap'>

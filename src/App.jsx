@@ -11,7 +11,9 @@ import NewUserCreated from './components/login/NewUserCreated';
 import CompleteRegistration from './components/login/CompleteRegistration';
 import Dashboard from './components/login/Dashboard';
 import Purchase from './components/cart/Purchase';
+import Checkout from './components/checkout/Checkout';
 import Mock from './components/Mock';
+import UploadItem from './components/admin/UploadItem';
 
 function App() {
 
@@ -42,6 +44,8 @@ function App() {
             <Route path='/users/newuser' element={<CompleteRegistration />} ></Route>
             <Route path='/dashboard' element={<Dashboard />} ></Route>
             <Route path='/mock' element={<Mock />} ></Route>
+            <Route path='/checkout' element={<Checkout />} ></Route>
+            <Route path='/uploadItem' element={<UploadItem/>} ></Route>
           </Routes>
     </div>
     </CartContextProvider>

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {getTicketController, getTicketByIdController, webhookMPController} from "../controllers/ticket.controller.mjs";
+import {getTicketController, getTicketByIdController, webhookMPController} from "../controllers/ticket.controller.js";
 
 const router = Router();
 

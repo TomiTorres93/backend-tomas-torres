@@ -1,6 +1,6 @@
 import { Router } from "express";
-import cartsService from "../services/dao/cart.services.mjs";
-import {getCartController, createCartController, getCartByIdController, putController, deleteProductsById} from "../controllers/cart.controller.mjs";
+import cartsService from "../services/dao/cart.services.js";
+import {getCartController, createCartController, getCartByIdController, putController, deleteProductsById} from "../controllers/cart.controller.js";
 
 const cartService = new cartsService();
 const router = Router();
